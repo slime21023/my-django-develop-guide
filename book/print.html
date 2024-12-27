@@ -1,0 +1,1332 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Django Develop Guide</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('light')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Django Develop Guide</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="project-setup"><a class="header" href="#project-setup">Project Setup</a></h1>
+<p>當你開始一個新的 Django 專案時，有一些基本的步驟和命令需要遵循</p>
+<ol>
+<li>
+<p>安裝 Django</p>
+<p>首先，確保你已經安裝了 Python 和 pip。然後安裝 Django：</p>
+<pre><code class="language-bash">pip install django
+</code></pre>
+</li>
+<li>
+<p>創建 Django 專案</p>
+<pre><code class="language-bash">django-admin startproject myproject
+</code></pre>
+<p>這將創建一個名為 myproject 的目錄，其中包含專案的基本結構</p>
+</li>
+<li>
+<p>創建 Django 應用</p>
+<pre><code class="language-bash">python manage.py startapp myapp
+</code></pre>
+<p>創建一個名為 myapp 的目錄，其中包含應用的基本結構</p>
+</li>
+<li>
+<p>配置 <code>settings.py</code></p>
+<p>編輯 <code>myproject/settings.py</code> 文件，將新應用添加到 <code>INSTALLED_APPS</code> 列表中：</p>
+<pre><code class="language-python">INSTALLED_APPS = [
+    ...
+    'myapp',
+]
+</code></pre>
+</li>
+<li>
+<p>創建和應用資料庫遷移</p>
+<p>創建初始資料庫遷移文件：</p>
+<pre><code class="language-bash">python manage.py makemigrations
+</code></pre>
+<p>執行遷移:</p>
+<pre><code class="language-bash">python manage.py migrate
+</code></pre>
+</li>
+<li>
+<p>創建管理員用戶 (可選)</p>
+<p>創建一個管理員用戶以訪問 Django 管理界面：</p>
+<pre><code class="language-bash">python manage.py createsuperuser
+</code></pre>
+</li>
+<li>
+<p>啟動開發伺服器</p>
+<p>啟動開發伺服器以查看你的專案：</p>
+<pre><code class="language-bash">python manage.py runserver
+</code></pre>
+<p>默認情況下，伺服器將運行在 <code>http://127.0.0.1:8000/</code></p>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="project-structure"><a class="header" href="#project-structure">Project Structure</a></h1>
+<h2 id="專案結構"><a class="header" href="#專案結構">專案結構</a></h2>
+<p>一個典型的 Django 專案結構如下：</p>
+<pre><code>myproject/
+    manage.py
+    myproject/
+        __init__.py
+        settings.py
+        urls.py
+        wsgi.py
+    myapp/
+        __init__.py
+        admin.py
+        apps.py
+        migrations/
+            __init__.py
+        models.py
+        tests.py
+        views.py
+</code></pre>
+<h2 id="創建視圖"><a class="header" href="#創建視圖">創建視圖</a></h2>
+<p>在 <code>myapp/views.py</code> 文件中定義視圖：</p>
+<pre><code class="language-python">from django.http import HttpResponse
+
+def index(request):
+    return HttpResponse(&quot;Hello, world!&quot;)
+</code></pre>
+<h2 id="配置應用程式的-url-路徑"><a class="header" href="#配置應用程式的-url-路徑">配置應用程式的 URL 路徑</a></h2>
+<p>在 <code>myapp/urls.py</code> 文件中定義應用的 URL：</p>
+<pre><code class="language-python">from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.index, name='index'),
+]
+</code></pre>
+<p>將應用程式的 URL 路徑添加到 <code>myproject/urls.py</code> 文件(執行環境)中：</p>
+<pre><code class="language-python">from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('myapp/', include('myapp.urls')),
+]
+</code></pre>
+<p>在 <code>http://127.0.0.1:8000/myapp/</code> 上執行應用程式的 URL 路徑，你應該會看到定義好的視圖 &quot;Hello, world!&quot;。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="database-setup"><a class="header" href="#database-setup">Database Setup</a></h1>
+<h2 id="配置資料庫"><a class="header" href="#配置資料庫">配置資料庫</a></h2>
+<p>Django 默認使用 SQLite 數據庫，但你可以根據需要配置其他數據庫，例如 PostgreSQL、MySQL 或 Oracle。</p>
+<p>SQLite 是 Django 的默認數據庫，不需要額外配置。數據庫文件將存儲在專案目錄中的 db.sqlite3 文件中。</p>
+<h3 id="配置-postgresql"><a class="header" href="#配置-postgresql">配置 PostgreSQL</a></h3>
+<p>首先，安裝 PostgreSQL 和 psycopg2 驅動程式：</p>
+<pre><code class="language-bash">pip install psycopg2-binary
+</code></pre>
+<p>然後在 <code>settings.py</code> 文件中配置資料庫：</p>
+<pre><code class="language-python">DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mydatabase',
+        'USER': 'mydatabaseuser',
+        'PASSWORD': 'mypassword',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+</code></pre>
+<h3 id="配置-mysql"><a class="header" href="#配置-mysql">配置 MySQL</a></h3>
+<p>首先，安裝 MySQL 和 mysqlclient 驅動程式：</p>
+<pre><code class="language-bash">pip install mysqlclient
+</code></pre>
+<p>然後在 <code>settings.py</code> 文件中配置資料庫：</p>
+<pre><code class="language-python">DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mydatabase',
+        'USER': 'mydatabaseuser',
+        'PASSWORD': 'mypassword',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+    }
+}
+</code></pre>
+<h2 id="配置資料庫模型"><a class="header" href="#配置資料庫模型">配置資料庫模型</a></h2>
+<p>在 <code>myapp/models.py</code> 文件中定義資料庫模型：</p>
+<pre><code class="language-python">from django.db import models
+
+class MyModel(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+</code></pre>
+<h2 id="創建和執行資料庫-migrations"><a class="header" href="#創建和執行資料庫-migrations">創建和執行資料庫 migrations</a></h2>
+<p>創建初始數據庫遷移文件：</p>
+<pre><code class="language-bash">python manage.py makemigrations
+</code></pre>
+<p>執行遷移：</p>
+<pre><code class="language-bash">python manage.py migrate
+</code></pre>
+<h2 id="配置數據庫連接池可選"><a class="header" href="#配置數據庫連接池可選">配置數據庫連接池（可選）</a></h2>
+<p>如果你使用的是 PostgreSQL 或 MySQL，你可能希望配置數據庫連接池以提高性能。你可以使用 <code>django-db-geventpool</code> 或其他連接池庫來實現這一點。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="models"><a class="header" href="#models">Models</a></h1>
+<h2 id="基礎"><a class="header" href="#基礎">基礎</a></h2>
+<p>Django Models 用來定義資料庫中資料表的資訊、及對映的關係。每個模型是 <code>django.db.models.Model</code> 的子類，並且每個模型的 <code>Field</code> 對應於資料庫表的 <code>Column</code> </p>
+<h2 id="定義模型"><a class="header" href="#定義模型">定義模型</a></h2>
+<p>模型是通過繼承 django.db.models.Model 類來定義的。以下是一個簡單的模型示例：</p>
+<pre><code class="language-python">from django.db import models
+
+class MyModel(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+</code></pre>
+<h2 id="fields-的定義與種類"><a class="header" href="#fields-的定義與種類">Fields 的定義與種類</a></h2>
+<p>Django 提供了多種 Field 的定義方式，以下是一些常見的 Field 的定義方式：</p>
+<ul>
+<li>
+<p><strong>CharField</strong>: 用於存儲字符串數據。</p>
+<pre><code class="language-python">name = models.CharField(max_length=100)
+</code></pre>
+</li>
+<li>
+<p><strong>TextField</strong>: 用於存儲大量文本數據。</p>
+<pre><code class="language-python">description = models.TextField()
+</code></pre>
+</li>
+<li>
+<p><strong>IntegerField</strong>: 用於存儲整數數據。</p>
+<pre><code class="language-python">age = models.IntegerField()
+</code></pre>
+</li>
+<li>
+<p><strong>DateTimeField</strong>: 用於存儲日期和時間數據。</p>
+<pre><code class="language-python">created_at = models.DateTimeField(auto_now_add=True)
+</code></pre>
+</li>
+<li>
+<p><strong>BooleanField</strong>:  用於存儲布爾值（True/False）。</p>
+<pre><code class="language-python">is_active = models.BooleanField(default=True)
+</code></pre>
+</li>
+<li>
+<p><strong>FloatField</strong>: 用於存儲浮點數數據。</p>
+<pre><code class="language-python">price = models.FloatField()
+</code></pre>
+</li>
+<li>
+<p><strong>EmailField</strong>: 用於存儲電子郵件地址。</p>
+<pre><code class="language-python">email = models.EmailField()
+</code></pre>
+</li>
+<li>
+<p><strong>URLField</strong>: 用於存儲網址。</p>
+<pre><code class="language-python">website  = models.URLField()
+</code></pre>
+</li>
+</ul>
+<p><strong>Field 選項</strong>: 每個字段都可以有一組選項來控制其行為。以下是一些常見的字段選項：</p>
+<ul>
+<li>
+<p><code>null</code>: 如果為 True，則允許欄位的空值為NULL。</p>
+<pre><code class="language-python">name = models.CharField(max_length=100, null=True)
+</code></pre>
+</li>
+<li>
+<p><code>blank</code>: 如果為 True，則允許欄位的空值。</p>
+<pre><code class="language-python">name = models.TextField(max_length=100, blank=True)
+</code></pre>
+</li>
+<li>
+<p><code>default</code>: 如果欄位未被填寫，則允許欄位的預設值。</p>
+<pre><code class="language-python">is_active = models.BooleanField(default=True)
+</code></pre>
+</li>
+<li>
+<p><code>unique</code>: 如果為 True，則允許欄位的值僅能在資料庫中唯一。</p>
+<pre><code class="language-python">email = models.EmailField(unique=True)
+</code></pre>
+</li>
+<li>
+<p><code>choices</code>: 如果欄位的值可以從一組可選值中選擇，則可以使用 <code>choices</code> 選項。</p>
+<pre><code class="language-python">COLOR_CHOICES = [
+  ('red', 'Red'), 
+  ('green', 'Green'), 
+  ('blue', 'Blue')
+]
+color = models.CharField(max_length=100, choices=COLOR_CHOICES)
+</code></pre>
+</li>
+</ul>
+<h2 id="主鍵與外鍵"><a class="header" href="#主鍵與外鍵">主鍵與外鍵</a></h2>
+<p>主鍵 (Primary Key): 每個模型都有一個主鍵字段，默認情況下是 id 字段。你可以通過設置 primary_key=True 來指定其他字段作為主鍵。</p>
+<pre><code class="language-python">id = models.AutoField(primary_key=True)
+</code></pre>
+<p>外鍵 (Foreign Key): 用於定義模型之間的一對多關係。</p>
+<pre><code class="language-python">category = models.ForeignKey('Category', on_delete=models.CASCADE)
+</code></pre>
+<h2 id="relationships-關係"><a class="header" href="#relationships-關係">Relationships 關係</a></h2>
+<p>Django 支持定義模型之間的關係，包括一對一（OneToOneField）、一對多（ForeignKey）和多對多（ManyToManyField）關係。</p>
+<ul>
+<li>
+<p>一對一關係:</p>
+<pre><code class="language-python">class Profile(models.Model):
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
+  bio = models.TextField()
+</code></pre>
+</li>
+<li>
+<p>一對多關係:</p>
+<pre><code class="language-python">class Category(models.Model):
+  name = models.CharField(max_length=100)
+
+class Product(models.Model):
+  name = models.CharField(max_length=100)
+  category = models.ForeignKey(Category, on_delete=models.CASCADE)
+</code></pre>
+</li>
+<li>
+<p>多對多關係:</p>
+<pre><code class="language-python">class Author(models.Model):
+  name = models.CharField(max_length=100)
+
+class Book(models.Model):
+  title = models.CharField(max_length=100)
+  authors = models.ManyToManyField(Author)
+</code></pre>
+</li>
+</ul>
+<h2 id="model-meta"><a class="header" href="#model-meta">Model Meta</a></h2>
+<p>模型元數據選項允許你自定義模型的行為。以下是一些常見的模型元數據選項：</p>
+<ul>
+<li>
+<p><code>ordering</code>: 指定模型的默認排序順序。</p>
+<pre><code class="language-python">class Meta:
+  ordering = ['-created_at']
+</code></pre>
+</li>
+<li>
+<p><code>verbose_name</code>: 指定模型的名稱。</p>
+<pre><code class="language-python">class Meta:
+  verbose_name = 'My Model'
+</code></pre>
+</li>
+<li>
+<p><code>verbose_name_plural</code>: 指定模型的複數名稱。</p>
+<pre><code class="language-python">class Meta:
+  verbose_name_plural = 'My Models'
+</code></pre>
+</li>
+<li>
+<p><code>unique_together</code>: 指定多個Field的組合必須是唯一的。</p>
+<pre><code class="language-python">class Meta:
+  unique_together = ('name', 'description')
+</code></pre>
+</li>
+</ul>
+<h2 id="model-methods"><a class="header" href="#model-methods">Model Methods</a></h2>
+<p>你可以在模型中定義方法來添加自定義行為。以下是一些常見的模型方法：</p>
+<ul>
+<li>
+<p>自定義方法:</p>
+<pre><code class="language-python">class MyModel(models.Model):
+  name = models.CharField(max_length=100)
+  created_at = models.DateTimeField(auto_now_add=True)
+
+  def is_recent(self):
+      return self.created_at &gt;= timezone.now() - datetime.timedelta(days=1)
+</code></pre>
+</li>
+<li>
+<p><code>__str__</code> 方法: 返回模型實例的字符串表示。</p>
+<pre><code class="language-python">class MyModel(models.Model):
+  name = models.CharField(max_length=100)
+
+  def __str__(self):
+      return self.name
+</code></pre>
+</li>
+<li>
+<p><code>save</code> 方法: 在保存模型實例之前或之後執行自定義邏輯。</p>
+<pre><code class="language-python">class MyModel(models.Model):
+  name = models.CharField(max_length=100)
+
+  def save(self, *args, **kwargs):
+      self.name = self.name.upper()
+      super().save(*args, **kwargs)
+</code></pre>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="views"><a class="header" href="#views">Views</a></h1>
+<h2 id="什麼是-django-視圖"><a class="header" href="#什麼是-django-視圖">什麼是 Django 視圖？</a></h2>
+<p>Django 視圖是一個簡單的 Python 函數，它接受一個網頁請求並返回一個網頁響應。視圖可以是基於函數的視圖（Function-Based Views, FBV）或基於類的視圖（Class-Based Views, CBV）。</p>
+<h2 id="基於函數的視圖-fbv"><a class="header" href="#基於函數的視圖-fbv">基於函數的視圖 (FBV)</a></h2>
+<p>基於函數的視圖是最簡單的視圖形式。它們是接受一個 HttpRequest 對象並返回一個 HttpResponse 對象的 Python 函數。</p>
+<h3 id="定義基於函數的視圖"><a class="header" href="#定義基於函數的視圖">定義基於函數的視圖</a></h3>
+<p>簡單的基於函數的視圖示例：</p>
+<pre><code class="language-python">from django.http import HttpResponse
+
+def my_view(request):
+    return HttpResponse(&quot;Hello, world!&quot;)
+</code></pre>
+<h4 id="使用模板"><a class="header" href="#使用模板">使用模板</a></h4>
+<p>可以使用 Django 模板來生成 HTML 響應：</p>
+<pre><code class="language-python">from django.shortcuts import render
+
+def my_view(request):
+    context = {'message': 'Hello, world!'}
+    return render(request, 'my_template.html', context)
+</code></pre>
+<h4 id="處理表單數據"><a class="header" href="#處理表單數據">處理表單數據</a></h4>
+<p>在視圖中處理表單數據：</p>
+<pre><code class="language-python">from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from .forms import MyForm
+
+def my_view(request):
+    if request.method == 'POST':
+        form = MyForm(request.POST)
+        if form.is_valid():
+            # 處理表單數據
+            return HttpResponseRedirect('/success/')
+    else:
+        form = MyForm()
+
+    return render(request, 'my_template.html', {'form': form})
+</code></pre>
+<h3 id="基於類的視圖-cbv"><a class="header" href="#基於類的視圖-cbv">基於類的視圖 (CBV)</a></h3>
+<p>基於類的視圖提供了一種更結構化的方式來組織視圖邏輯。它們是基於 Python 類的，並且可以繼承和重用。</p>
+<h4 id="定義基於類的視圖"><a class="header" href="#定義基於類的視圖">定義基於類的視圖</a></h4>
+<p>基於類的視圖示例：</p>
+<pre><code class="language-python">from django.http import HttpResponse
+from django.views import View
+
+class MyView(View):
+    def get(self, request):
+        return HttpResponse(&quot;Hello, world!&quot;)
+</code></pre>
+<h4 id="使用通用視圖"><a class="header" href="#使用通用視圖">使用通用視圖</a></h4>
+<p>Django 提供了一組通用視圖，可以簡化常見的視圖邏輯。例如，<code>ListView</code> 和 <code>DetailView</code>：</p>
+<pre><code class="language-python">from django.views.generic import ListView, DetailView
+from .models import MyModel
+
+class MyListView(ListView):
+    model = MyModel
+    template_name = 'my_model_list.html'
+
+class MyDetailView(DetailView):
+    model = MyModel
+    template_name = 'my_model_detail.html'
+</code></pre>
+<h4 id="處理表單數據-1"><a class="header" href="#處理表單數據-1">處理表單數據</a></h4>
+<p>使用 FormView 來處理表單數據：</p>
+<pre><code class="language-python">from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
+from .forms import MyForm
+
+class MyFormView(FormView):
+    template_name = 'my_template.html'
+    form_class = MyForm
+    success_url = reverse_lazy('success')
+
+    def form_valid(self, form):
+        # 處理表單數據
+        return super().form_valid(form)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="templates"><a class="header" href="#templates">Templates</a></h1>
+<h2 id="什麼是-django-模板"><a class="header" href="#什麼是-django-模板">什麼是 Django 模板？</a></h2>
+<p>Django 模板是一種用於生成 HTML 的文本文件。它們允許你將動態內容嵌入到靜態 HTML 中，從而使你能夠動態生成網頁內容。模板使用 Django 模板語言（DTL）來控制邏輯和顯示。</p>
+<h2 id="如何定義模板"><a class="header" href="#如何定義模板">如何定義模板</a></h2>
+<p>模板是純文本文件，通常具有 .html 擴展名。它們可以包含靜態 HTML、DTL 標籤和過濾器。</p>
+<p>簡單的模板示例，它顯示一個動態消息：</p>
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My Template&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;{{ message }}&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2 id="模板語言"><a class="header" href="#模板語言">模板語言</a></h2>
+<p>Django 模板語言（DTL）提供了一組標籤和過濾器來控制模板的行為。</p>
+<h3 id="變量"><a class="header" href="#變量">變量</a></h3>
+<p>使用雙大括號 {{ }} 來插入變量：</p>
+<pre><code class="language-python">&lt;p&gt;Hello, {{ name }}!&lt;/p&gt;
+</code></pre>
+<h3 id="標籤"><a class="header" href="#標籤">標籤</a></h3>
+<p>Django 模板語言提供了多種標籤來控制模板的行為。以下是一些常見的標籤：</p>
+<ul>
+<li>
+<p><code>{% if %}</code>: 條件語句</p>
+<pre><code class="language-html">{% if user.is_authenticated %}
+  &lt;p&gt;Welcome, {{ user.username }}!&lt;/p&gt;
+{% else %}
+  &lt;p&gt;Please log in.&lt;/p&gt;
+{% endif %}
+</code></pre>
+</li>
+<li>
+<p><code>{% for %}</code>: 循環語句</p>
+<pre><code class="language-html">&lt;ul&gt;
+  {% for item in items %}
+    &lt;li&gt;{{ item }}&lt;/li&gt;
+  {% endfor %}
+&lt;/ul&gt;
+</code></pre>
+</li>
+<li>
+<p><code>{% block %}</code>: 模板繼承中的塊</p>
+<pre><code class="language-html">{% block content %}
+  &lt;p&gt;Default content&lt;/p&gt;
+{% endblock %}
+</code></pre>
+</li>
+<li>
+<p><code>{% include %}</code>: 包含其他模板</p>
+<pre><code class="language-html">{% extends 'base.html' %}
+</code></pre>
+</li>
+</ul>
+<h3 id="過濾器"><a class="header" href="#過濾器">過濾器</a></h3>
+<p>過濾器是用來修改變量的顯示方式。以下是一些常見的過濾器：</p>
+<ul>
+<li>
+<p><code>|lower</code>: 將字符串轉換為小寫</p>
+<pre><code class="language-python">{{ name|lower }}
+</code></pre>
+</li>
+<li>
+<p><code>|upper</code>: 將字符串轉換為大寫</p>
+<pre><code class="language-python">{{ name|upper }}
+</code></pre>
+</li>
+<li>
+<p><code>|title</code>: 將字符串轉換為首字母大寫</p>
+<pre><code class="language-python">{{ name|title }}
+</code></pre>
+</li>
+<li>
+<p><code>|length</code>: 將字符串長度轉換為數字</p>
+<pre><code class="language-python">{{ name|length }}
+</code></pre>
+</li>
+<li>
+<p><code>|date</code>: 將日期轉換為格式化的日期</p>
+<pre><code class="language-python">{{ date|date:&quot;Y-m-d&quot; }}
+</code></pre>
+</li>
+</ul>
+<h2 id="模板繼承"><a class="header" href="#模板繼承">模板繼承</a></h2>
+<p>模板繼承允許你創建可重用的模板塊，從而避免重複代碼。</p>
+<h3 id="基模板"><a class="header" href="#基模板">基模板</a></h3>
+<p>基模板定義了可重用的塊：</p>
+<pre><code class="language-html">&lt;!-- base.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;{% block title %}My Site{% endblock %}&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=&quot;content&quot;&gt;
+        {% block content %}{% endblock %}
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h3 id="子模板"><a class="header" href="#子模板">子模板</a></h3>
+<p>子模板繼承基模板並填充塊：</p>
+<pre><code class="language-html">&lt;!-- child.html --&gt;
+{% extends &quot;base.html&quot; %}
+
+{% block title %}My Page{% endblock %}
+
+{% block content %}
+&lt;p&gt;This is the content of my page.&lt;/p&gt;
+{% endblock %}
+</code></pre>
+<h2 id="模板上下文"><a class="header" href="#模板上下文">模板上下文</a></h2>
+<p>模板上下文是一個字典，它包含傳遞給模板的變量。你可以在視圖中創建上下文並將其傳遞給模板。</p>
+<h3 id="在視圖中使用模板"><a class="header" href="#在視圖中使用模板">在視圖中使用模板</a></h3>
+<pre><code class="language-python">from django.shortcuts import render
+
+def my_view(request):
+    context = {
+        'message': 'Hello, world!',
+        'item_list': [{'name': 'Item 1'}, {'name': 'Item 2'}],
+    }
+    return render(request, 'my_template.html', context)
+</code></pre>
+<h2 id="加載模板"><a class="header" href="#加載模板">加載模板</a></h2>
+<p>Django 使用模板加載器來查找和加載模板文件。默認情況下，Django 會在每個應用的 <code>templates</code> 目錄中查找模板。</p>
+<h3 id="配置模板加載器"><a class="header" href="#配置模板加載器">配置模板加載器</a></h3>
+<p>在設置文件中配置模板加載器：</p>
+<pre><code class="language-python"># settings.py
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+</code></pre>
+<h2 id="自定義模板過濾器標籤"><a class="header" href="#自定義模板過濾器標籤">自定義模板、過濾器標籤</a></h2>
+<p>創建自定義模板標籤和過濾器來擴展 Django 模板語言。</p>
+<h3 id="自定義模板標籤"><a class="header" href="#自定義模板標籤">自定義模板標籤</a></h3>
+<pre><code class="language-python"># templatetags/my_tags.py
+from django import template
+
+register = template.Library()
+
+@register.simple_tag
+def my_tag(arg):
+    return f&quot;Argument: {arg}&quot;
+</code></pre>
+<h3 id="自定義模板過濾器"><a class="header" href="#自定義模板過濾器">自定義模板過濾器</a></h3>
+<pre><code class="language-python"># templatetags/my_filters.py
+from django import template
+
+register = template.Library()
+
+@register.filter
+def my_filter(value, arg):
+    return f&quot;Value: {value}, Argument: {arg}&quot;
+</code></pre>
+<h3 id="在模板中使用自定義標籤和過濾器"><a class="header" href="#在模板中使用自定義標籤和過濾器">在模板中使用自定義標籤和過濾器</a></h3>
+<pre><code class="language-python">{% load my_tags my_filters %}
+
+&lt;p&gt;{% my_tag &quot;Hello&quot; %}&lt;/p&gt;
+&lt;p&gt;{{ &quot;world&quot;|my_filter:&quot;Django&quot; }}&lt;/p&gt;
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="urls"><a class="header" href="#urls">URLs</a></h1>
+<h2 id="什麼是-django-url-配置"><a class="header" href="#什麼是-django-url-配置">什麼是 Django URL 配置？</a></h2>
+<p>Django URL 配置是將 URL 模式映射到視圖的過程。它允許你定義 URL 模式，並指定當這些模式匹配時應該調用哪個視圖。</p>
+<h2 id="基本-url-配置"><a class="header" href="#基本-url-配置">基本 URL 配置</a></h2>
+<p>Django 使用 <code>urls.py</code> 文件來配置 URL。這個文件通常位於每個應用的目錄中，並且包含 URL 模式(urlpatterns)和視圖的映射。</p>
+<h3 id="url-配置示例"><a class="header" href="#url-配置示例">URL 配置示例</a></h3>
+<pre><code class="language-python">from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('about/', views.about, name='about'),
+]
+</code></pre>
+<h2 id="url-模式"><a class="header" href="#url-模式">URL 模式</a></h2>
+<p>URL 模式定義了 URL 的結構。Django 使用 path 和 re_path 函數來定義 URL 模式。</p>
+<h3 id="使用-path"><a class="header" href="#使用-path">使用 <code>path</code></a></h3>
+<p><code>path</code> 函數用於定義簡單的 URL 模式:</p>
+<pre><code class="language-python">from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('articles/&lt;int:year&gt;/', views.year_archive, name='year_archive'),
+    path('articles/&lt;int:year&gt;/&lt;int:month&gt;/', views.month_archive, name='month_archive'),
+]
+</code></pre>
+<h3 id="使用-re_path"><a class="header" href="#使用-re_path">使用 <code>re_path</code></a></h3>
+<p><code>re_path</code> 函數用於定義更複雜的 URL 模式，它使用正則表達式:</p>
+<pre><code class="language-python">from django.urls import re_path
+from . import views
+
+urlpatterns = [
+    re_path(r'^articles/(?P&lt;year&gt;[0-9]{4})/$', views.year_archive, name='year_archive'),
+    re_path(r'^articles/(?P&lt;year&gt;[0-9]{4})/(?P&lt;month&gt;[0-9]{2})/$', views.month_archive, name='month_archive'),
+]
+</code></pre>
+<h2 id="url-命名"><a class="header" href="#url-命名">URL 命名</a></h2>
+<p>為 URL 模式命名可以使你在模板和視圖中更容易地引用它們。你可以使用 name 參數來命名 URL 模式：</p>
+<pre><code class="language-python">from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('about/', views.about, name='about'),
+    path('articles/&lt;int:year&gt;/', views.year_archive, name='year_archive'),
+]
+</code></pre>
+<h2 id="包含其他-url-配置"><a class="header" href="#包含其他-url-配置">包含其他 URL 配置</a></h2>
+<p>使用 include 函數來包含其他 URL 配置，這允許你將 URL 配置分割到多個文件中，從而使代碼更具模塊化。</p>
+<pre><code class="language-python">from django.urls import include, path
+
+urlpatterns = [
+    path('articles/', include('articles.urls')),
+    path('blog/', include('blog.urls')),
+]
+</code></pre>
+<h2 id="命名空間"><a class="header" href="#命名空間">命名空間</a></h2>
+<p>命名空間允許你在包含的 URL 配置中使用相同的 URL 名稱，而不會發生衝突。使用 namespace 參數來定義命名空間：</p>
+<pre><code class="language-python">from django.urls import include, path
+
+urlpatterns = [
+    path('articles/', include(('articles.urls', 'articles'), namespace='articles')),
+    path('blog/', include(('blog.urls', 'blog'), namespace='blog')),
+]
+</code></pre>
+<h2 id="動態-url-路由"><a class="header" href="#動態-url-路由">動態 URL 路由</a></h2>
+<p>在 URL 模式中使用動態參數，並在視圖中訪問這些參數。</p>
+<h4 id="動態-url-路由示例"><a class="header" href="#動態-url-路由示例">動態 URL 路由示例</a></h4>
+<pre><code class="language-python">from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('articles/&lt;int:year&gt;/', views.year_archive, name='year_archive'),
+    path('articles/&lt;int:year&gt;/&lt;int:month&gt;/', views.month_archive, name='month_archive'),
+]
+</code></pre>
+<h4 id="在視圖中訪問動態參數"><a class="header" href="#在視圖中訪問動態參數">在視圖中訪問動態參數</a></h4>
+<pre><code class="language-python">from django.http import HttpResponse
+
+def year_archive(request, year):
+    return HttpResponse(f&quot;Year: {year}&quot;)
+
+def month_archive(request, year, month):
+    return HttpResponse(f&quot;Year: {year}, Month: {month}&quot;)
+</code></pre>
+<h2 id="默認參數"><a class="header" href="#默認參數">默認參數</a></h2>
+<p>在 URL 模式中定義默認參數，這些參數將在未提供時使用。</p>
+<h4 id="默認參數示例"><a class="header" href="#默認參數示例">默認參數示例</a></h4>
+<pre><code class="language-python">from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('articles/&lt;int:year&gt;/', views.year_archive, {'month': 1}, name='year_archive'),
+]
+</code></pre>
+<h4 id="在視圖中訪問默認參數"><a class="header" href="#在視圖中訪問默認參數">在視圖中訪問默認參數</a></h4>
+<pre><code class="language-python">from django.http import HttpResponse
+
+def year_archive(request, year, month):
+    return HttpResponse(f&quot;Year: {year}, Month: {month}&quot;)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="admin"><a class="header" href="#admin">Admin</a></h1>
+<h2 id="什麼是-django-admin"><a class="header" href="#什麼是-django-admin">什麼是 Django Admin？</a></h2>
+<p>Django Admin 是一個自動生成的管理界面，它允許你通過 Web 界面來管理 Application 的資料。它是 Django 的一部分，並且可以自動生成基於你的模型的管理界面。</p>
+<h2 id="啟用-django-admin"><a class="header" href="#啟用-django-admin">啟用 Django Admin</a></h2>
+<p>要啟用 Django Admin，你需要確保 <code>django.contrib.admin</code> 和 <code>django.contrib.auth</code> 已經添加到你的 <code>INSTALLED_APPS</code> 設置中。</p>
+<pre><code class="language-python"># settings.py
+INSTALLED_APPS = [
+    ...
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    ...
+]
+</code></pre>
+<h2 id="創建管理員用戶"><a class="header" href="#創建管理員用戶">創建管理員用戶</a></h2>
+<p>你需要創建一個管理員用戶來訪問 Django Admin 界面。你可以使用以下命令來創建管理員用戶：</p>
+<pre><code class="language-bash">python manage.py createsuperuser
+</code></pre>
+<h2 id="配置-django-admin-介面-url"><a class="header" href="#配置-django-admin-介面-url">配置 Django Admin 介面 URL</a></h2>
+<p>你需要在你的 urls.py 文件中配置 Django Admin 的 URL。</p>
+<pre><code class="language-python"># urls.py
+from django.contrib import admin
+from django.urls import path
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    ...
+]
+</code></pre>
+<h2 id="註冊模型"><a class="header" href="#註冊模型">註冊模型</a></h2>
+<p>要在 Django Admin 中管理你的模型，你需要在 admin.py 文件中註冊它們。</p>
+<pre><code class="language-python"># admin.py
+from django.contrib import admin
+from .models import MyModel
+
+admin.site.register(MyModel)
+</code></pre>
+<h2 id="自定義-admin-介面"><a class="header" href="#自定義-admin-介面">自定義 Admin 介面</a></h2>
+<p>通過創建自定義的 ModelAdmin 類來自定義 Admin 介面:</p>
+<pre><code class="language-python"># admin.py
+from django.contrib import admin
+from .models import MyModel
+
+class MyModelAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at')
+    list_filter = ('created_at',)
+    search_fields = ('name',)
+
+admin.site.register(MyModel, MyModelAdmin)
+</code></pre>
+<h4 id="自定義列表顯示"><a class="header" href="#自定義列表顯示">自定義列表顯示</a></h4>
+<p>你可以使用 <code>list_display</code> 選項來自定義列表頁面顯示的字段。</p>
+<pre><code class="language-python">class MyModelAdmin(admin.ModelAdmin):
+    list_display = ('name', 'created_at')
+</code></pre>
+<h4 id="添加過濾器"><a class="header" href="#添加過濾器">添加過濾器</a></h4>
+<p>你可以使用 <code>list_filter</code> 選項來添加過濾器到列表頁面。</p>
+<pre><code class="language-python">class MyModelAdmin(admin.ModelAdmin):
+    list_filter = ('created_at',)
+</code></pre>
+<h4 id="添加搜索功能"><a class="header" href="#添加搜索功能">添加搜索功能</a></h4>
+<p>你可以使用 <code>search_fields</code> 選項來添加搜索功能到列表頁面。</p>
+<pre><code class="language-python">class MyModelAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+</code></pre>
+<h4 id="自定義表單"><a class="header" href="#自定義表單">自定義表單</a></h4>
+<p>你可以使用 form 選項來自定義表單。</p>
+<pre><code class="language-python">from django import forms
+
+class MyModelForm(forms.ModelForm):
+    class Meta:
+        model = MyModel
+        fields = ['name', 'created_at']
+
+class MyModelAdmin(admin.ModelAdmin):
+    form = MyModelForm
+</code></pre>
+<h4 id="自定義動作"><a class="header" href="#自定義動作">自定義動作</a></h4>
+<p>你可以添加自定義動作到 Admin 界面。</p>
+<pre><code class="language-python">from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
+
+def make_published(modeladmin, request, queryset):
+    queryset.update(status='p')
+make_published.short_description = _(&quot;Mark selected stories as published&quot;)
+
+class MyModelAdmin(admin.ModelAdmin):
+    actions = [make_published]
+</code></pre>
+<h4 id="自定義網站資訊"><a class="header" href="#自定義網站資訊">自定義網站資訊</a></h4>
+<p>你可以自定義 Admin 站點的標題和標頭。</p>
+<pre><code class="language-python"># admin.py
+from django.contrib.admin import AdminSite
+
+class MyAdminSite(AdminSite):
+    site_header = 'My Admin'
+    site_title = 'My Admin Portal'
+    index_title = 'Welcome to My Admin Portal'
+
+admin_site = MyAdminSite(name='myadmin')
+admin_site.register(MyModel, MyModelAdmin)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="static-files"><a class="header" href="#static-files">Static Files</a></h1>
+<h2 id="什麼是-django-靜態文件"><a class="header" href="#什麼是-django-靜態文件">什麼是 Django 靜態文件？</a></h2>
+<p>Django 靜態文件是那些不會隨請求改變的文件，例如 CSS、JavaScript 和圖像。這些文件通常用於前端設計和用戶界面。</p>
+<h2 id="配置靜態文件設定"><a class="header" href="#配置靜態文件設定">配置靜態文件設定</a></h2>
+<p>要在 Django 中使用靜態文件，你需要在設置文件中進行一些配置。</p>
+<h3 id="設置靜態文件目錄"><a class="header" href="#設置靜態文件目錄">設置靜態文件目錄</a></h3>
+<p>在 <code>settings.py</code> 文件中，配置 <code>STATIC_URL</code> 和 <code>STATICFILES_DIRS</code>：</p>
+<pre><code class="language-python"># settings.py
+import os
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+STATIC_URL = '/static/'
+
+# BASE_DIR 是專案的絕對路徑
+STATIC_ROOT = os.path.join(BASE_DIR, 'collect_static')
+
+# 非必須
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'common_static')]
+</code></pre>
+<h2 id="組織靜態文件"><a class="header" href="#組織靜態文件">組織靜態文件</a></h2>
+<p>你可以在應用的 static 目錄中組織靜態文件。例如：</p>
+<pre><code>myproject/
+    myapp/
+        static/
+            myapp/
+                css/
+                js/
+                images/
+        templates/
+        ...
+    static/
+        css/
+        js/
+        images/
+    ...
+</code></pre>
+<h2 id="引用靜態文件"><a class="header" href="#引用靜態文件">引用靜態文件</a></h2>
+<p>在模板中，你可以使用 <code>{% static %}</code> 模板標籤來引用靜態文件：</p>
+<pre><code class="language-html">{% load static %}
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;{% static 'myapp/css/styles.css' %}&quot;&gt;
+    &lt;script src=&quot;{% static 'myapp/js/scripts.js' %}&quot;&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;img src=&quot;{% static 'myapp/images/logo.png' %}&quot; alt=&quot;Logo&quot;&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2 id="服務靜態文件"><a class="header" href="#服務靜態文件">服務靜態文件</a></h2>
+<p>在開發過程中，Django 會自動服務靜態文件。然而，在生產環境中，你應該使用一個專門的 Web 服務器（如 Nginx 或 Apache）來服務靜態文件。</p>
+<h4 id="開發環境"><a class="header" href="#開發環境">開發環境</a></h4>
+<p>在開發環境中，Django 會自動服務靜態文件。你只需確保 <code>DEBUG</code> 設置為 <code>True</code>：</p>
+<pre><code class="language-python"># settings.py
+DEBUG = True
+</code></pre>
+<h4 id="生產環境"><a class="header" href="#生產環境">生產環境</a></h4>
+<p>在生產環境中，你應該配置 Web 服務器來服務靜態文件。以下是一個使用 Nginx 的示例配置：</p>
+<pre><code class="language-nginx">server {
+    listen 80;
+    server_name myapp.com;
+
+    location /static/ {
+        alias /path/to/myproject/static/;
+    }
+
+    location / {
+        proxy_pass http://127.0.0.1:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+</code></pre>
+<h2 id="使用第三方存儲服務"><a class="header" href="#使用第三方存儲服務">使用第三方存儲服務</a></h2>
+<p>你還可以使用第三方存儲服務（如 Amazon S3）來存儲和服務靜態文件。你需要安裝 <code>django-storages</code> 和 <code>boto3</code> 包：</p>
+<pre><code class="language-bash">pip install django-storages boto3
+</code></pre>
+<p>然後在 <code>settings.py</code> 文件中配置存儲後端：</p>
+<pre><code class="language-python"># settings.py
+INSTALLED_APPS += ['storages']
+
+AWS_ACCESS_KEY_ID = 'your-access-key-id'
+AWS_SECRET_ACCESS_KEY = 'your-secret-access-key'
+AWS_STORAGE_BUCKET_NAME = 'your-bucket-name'
+AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="testing"><a class="header" href="#testing">Testing</a></h1>
+<h2 id="什麼是-django-測試"><a class="header" href="#什麼是-django-測試">什麼是 Django 測試？</a></h2>
+<p>Django 測試框架是一個基於 Python 的 unittest 模塊的測試框架。它允許你編寫和運行測試來驗證你的應用程序的行為。測試可以幫助你確保你的代碼在不同情況下都能正常工作。</p>
+<h2 id="設置測試環境"><a class="header" href="#設置測試環境">設置測試環境</a></h2>
+<p>可以在 <code>settings.py</code> 文件中配置測試數據庫：</p>
+<pre><code class="language-python"># settings.py
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / &quot;db.sqlite3&quot;,
+        'TEST': {
+            'NAME': BASE_DIR / &quot;test_db.sqlite3&quot;,
+        },
+    }
+}
+</code></pre>
+<h2 id="編寫測試"><a class="header" href="#編寫測試">編寫測試</a></h2>
+<p>Django 測試框架允許你編寫不同類型的測試，包括單元測試和集成測試。</p>
+<h4 id="編寫單元測試"><a class="header" href="#編寫單元測試">編寫單元測試</a></h4>
+<p>單元測試用於測試單個函數或方法的行為，以下是一個簡單的單元測試示例：</p>
+<pre><code class="language-python"># tests.py
+from django.test import SimpleTestCase
+
+class MyTestCase(SimpleTestCase):
+    def test_addition(self):
+        self.assertEqual(1 + 1, 2)
+</code></pre>
+<h4 id="編寫集成測試"><a class="header" href="#編寫集成測試">編寫集成測試</a></h4>
+<p>集成測試用於測試多個組件之間的交互，以下是一個簡單的集成測試示例：</p>
+<pre><code class="language-python"># tests.py
+from django.test import TestCase
+from myapp.models import MyModel
+
+class MyModelTestCase(TestCase):
+    def setUp(self):
+        MyModel.objects.create(name=&quot;Test&quot;, description=&quot;This is a test&quot;)
+
+    def test_my_model(self):
+        obj = MyModel.objects.get(name=&quot;Test&quot;)
+        self.assertEqual(obj.description, &quot;This is a test&quot;)
+</code></pre>
+<h2 id="測試視圖"><a class="header" href="#測試視圖">測試視圖</a></h2>
+<p>使用 TestCase 類來測試視圖，以下是一個測試視圖的示例：</p>
+<pre><code class="language-python"># tests.py
+from django.test import TestCase
+from django.urls import reverse
+
+class MyViewTests(TestCase):
+    def test_my_view(self):
+        response = self.client.get(reverse('my_view'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, &quot;Hello, world!&quot;)
+</code></pre>
+<h2 id="測試模型"><a class="header" href="#測試模型">測試模型</a></h2>
+<p>使用 TestCase 類來測試模型，以下是一個測試模型的示例：</p>
+<pre><code class="language-python"># tests.py
+from django.test import TestCase
+from myapp.models import MyModel
+
+class MyModelTests(TestCase):
+    def test_my_model(self):
+        obj = MyModel.objects.create(name=&quot;Test&quot;, description=&quot;This is a test&quot;)
+        self.assertEqual(obj.name, &quot;Test&quot;)
+        self.assertEqual(obj.description, &quot;This is a test&quot;)
+</code></pre>
+<h2 id="測試表單"><a class="header" href="#測試表單">測試表單</a></h2>
+<p>使用 TestCase 類來測試表單，以下是一個測試表單的示例：</p>
+<pre><code class="language-python"># tests.py
+from django.test import TestCase
+from myapp.forms import MyForm
+
+class MyFormTests(TestCase):
+    def test_my_form(self):
+        form_data = {'name': 'Test', 'description': 'This is a test'}
+        form = MyForm(data=form_data)
+        self.assertTrue(form.is_valid())
+</code></pre>
+<h2 id="運行測試"><a class="header" href="#運行測試">運行測試</a></h2>
+<p>可以使用以下命令來運行測試：</p>
+<pre><code class="language-bash">python manage.py test
+</code></pre>
+<h2 id="測試覆蓋率"><a class="header" href="#測試覆蓋率">測試覆蓋率</a></h2>
+<p>使用 coverage 工具來測量你的測試覆蓋率。首先，安裝 coverage 工具：</p>
+<pre><code class="language-bash">pip install coverage
+</code></pre>
+<p>然後運行以下命令來測量測試覆蓋率：</p>
+<pre><code class="language-bash">coverage run --source='.' manage.py test
+coverage report
+</code></pre>
+<h2 id="進階測試"><a class="header" href="#進階測試">進階測試</a></h2>
+<p>Django 測試框架還提供了一些測試技術，例如模擬請求和響應、測試客戶端和測試用戶。</p>
+<h4 id="模擬請求和響應"><a class="header" href="#模擬請求和響應">模擬請求和響應</a></h4>
+<p>使用 <code>RequestFactory</code> 來模擬請求和響應：</p>
+<pre><code class="language-python"># tests.py
+from django.test import RequestFactory, TestCase
+from myapp.views import my_view
+
+class MyViewTests(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_my_view(self):
+        request = self.factory.get('/my-view/')
+        response = my_view(request)
+        self.assertEqual(response.status_code, 200)
+</code></pre>
+<h4 id="測試客戶端"><a class="header" href="#測試客戶端">測試客戶端</a></h4>
+<p>使用 <code>Client</code> 類來模擬用戶與應用程序的交互：</p>
+<pre><code class="language-python"># tests.py
+from django.test import Client, TestCase
+
+class MyViewTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_my_view(self):
+        response = self.client.get('/my-view/')
+        self.assertEqual(response.status_code, 200)
+</code></pre>
+<h4 id="測試用戶"><a class="header" href="#測試用戶">測試用戶</a></h4>
+<p>使用 User 模型來測試用戶相關的功能：</p>
+<pre><code class="language-python"># tests.py
+from django.contrib.auth.models import User
+from django.test import TestCase
+
+class MyViewTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='12345')
+
+    def test_my_view(self):
+        self.client.login(username='testuser', password='12345')
+        response = self.client.get('/my-view/')
+        self.assertEqual(response.status_code, 200)
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="django-ninja-intro"><a class="header" href="#django-ninja-intro">Django Ninja Intro</a></h1>
+<h2 id="django-ninja"><a class="header" href="#django-ninja">Django Ninja</a></h2>
+<p>Django Ninja 是一個高性能、易學、快速編碼的 Django REST 框架。它旨在提供一個簡單且強大的方式來構建 API，並與 Django 核心和 ORM 有良好的集成。</p>
+<h2 id="為什麼選擇-django-ninja"><a class="header" href="#為什麼選擇-django-ninja">為什麼選擇 Django Ninja？</a></h2>
+<ul>
+<li>高性能：Django Ninja 設計用於高性能應用，相對於 flask 能夠處理較大量請求。</li>
+<li>易學易用：它提供了簡單的 API 來定義和處理 HTTP 請求和響應。</li>
+<li>快速編碼：使用 Django Ninja，你可以快速構建和部署 API。</li>
+</ul>
+<h2 id="安裝-django-ninja"><a class="header" href="#安裝-django-ninja">安裝 Django Ninja</a></h2>
+<p>使用 pip 來安裝 Django Ninja：</p>
+<pre><code class="language-bash">pip install django-ninja
+</code></pre>
+<h2 id="基本配置"><a class="header" href="#基本配置">基本配置</a></h2>
+<p>在你的 Django 項目中，你需要配置 Django Ninja。以下是基本配置步驟：</p>
+<ol>
+<li>
+<p>添加到 INSTALLED_APPS：</p>
+<p>雖然不是必須的，但你可以將 <code>ninja</code> 添加到你的 <code>INSTALLED_APPS</code> 中：</p>
+<pre><code class="language-python"># settings.py
+INSTALLED_APPS = [
+    ...
+    'ninja',
+]
+</code></pre>
+</li>
+<li>
+<p>創建 API 模塊</p>
+<p>在你的 Django 項目中創建一個 <code>api.py</code> 文件來定義你的 API 端點。</p>
+<pre><code class="language-python"># api.py
+from ninja import NinjaAPI
+
+api = NinjaAPI()
+
+@api.get(&quot;/hello&quot;)
+def hello(request):
+    return {&quot;message&quot;: &quot;Hello, world!&quot;}
+</code></pre>
+</li>
+<li>
+<p>配置 URL</p>
+<p>在 <code>urls.py</code> 文件中配置 API 的 URL 路徑。</p>
+<pre><code class="language-python"># urls.py
+from django.urls import path
+from .api import api
+
+urlpatterns = [
+    path(&quot;api/&quot;, api.urls),
+]
+</code></pre>
+</li>
+<li>
+<p>運行 API</p>
+<p>啟動 Django 開發伺服器來運行你的 API：</p>
+<pre><code class="language-bash">python manage.py runserver
+</code></pre>
+</li>
+</ol>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="input-handling"><a class="header" href="#input-handling">Input Handling</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="response-handling"><a class="header" href="#response-handling">Response Handling</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="routers"><a class="header" href="#routers">Routers</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="authentication"><a class="header" href="#authentication">Authentication</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="throttling"><a class="header" href="#throttling">Throttling</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="testing-1"><a class="header" href="#testing-1">Testing</a></h1>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
