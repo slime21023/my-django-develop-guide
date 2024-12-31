@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html" class="active"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html" class="active"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django ORM</li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,6 +174,29 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="throttling"><a class="header" href="#throttling">Throttling</a></h1>
+<h2 id="節流概述"><a class="header" href="#節流概述">節流概述</a></h2>
+<p>Django Ninja 的流量限制功能可以幫助控制 API 的請求頻率，避免過多請求對伺服器造成負擔。流量限制可以在以下層級進行設置：</p>
+<ol>
+<li>全局層級：透過 throttle 參數設定，適用於所有 API 請求。</li>
+<li>路由層級：在路由註冊時設定流量限制。</li>
+<li>操作層級：在具體操作上設置特定的流量限制，會覆蓋全局與路由層級的設定。</li>
+</ol>
+<h2 id="內建流量限制"><a class="header" href="#內建流量限制">內建流量限制</a></h2>
+<p>Django Ninja 提供了多種內建流量限制器，例如：</p>
+<ul>
+<li><code>AnonRateThrottle</code>：限制未認證用戶的請求頻率。</li>
+<li><code>UserRateThrottle</code>：根據用戶 ID 限制已認證用戶的請求頻率。</li>
+<li><code>AuthRateThrottle</code>：根據已認證用戶的身份進行限制。</li>
+</ul>
+<pre><code class="language-python">from ninja.throttling import AnonRateThrottle, AuthRateThrottle
+
+api = NinjaAPI(
+    throttle=[
+        AnonRateThrottle('10/s'),
+        AuthRateThrottle('100/s'),
+    ],
+)
+</code></pre>
 
                     </main>
 

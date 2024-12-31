@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django ORM</li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -1263,12 +1263,584 @@ urlpatterns = [
 </li>
 </ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="input-handling"><a class="header" href="#input-handling">Input Handling</a></h1>
+<h2 id="基本輸入處理"><a class="header" href="#基本輸入處理">基本輸入處理</a></h2>
+<p>Django Ninja 基於 pydantic 開發，使用 Python 的類型提示來定義輸入數據的結構。你可以使用 Schema 類來定義輸入數據的模式。</p>
+<pre><code class="language-python">from ninja import Schema
+
+class ItemSchema(Schema):
+    name: str
+    price: float
+    quantity: int
+</code></pre>
+<h2 id="使用-schema-驗證輸入"><a class="header" href="#使用-schema-驗證輸入">使用 Schema 驗證輸入</a></h2>
+<p>你可以在 API 端點中使用 <code>Schema</code> 來驗證輸入數據。以下是一個示例，展示如何在 POST 請求中使用 <code>Schema</code> 來驗證輸入數據：</p>
+<pre><code class="language-python">from ninja import Schema
+from typing import List
+
+class AddressSchema(Schema):
+    street: str
+    city: str
+    zipcode: str
+
+class UserSchema(Schema):
+    name: str
+    age: int
+    addresses: List[AddressSchema]
+</code></pre>
+<h2 id="處理嵌套結構"><a class="header" href="#處理嵌套結構">處理嵌套結構</a></h2>
+<p>Django Ninja 還支持處理嵌套結構。你可以在 <code>Schema</code> 中定義嵌套的 <code>Schema</code> 來處理複雜的輸入數據。</p>
+<pre><code class="language-python">from ninja import Schema
+from typing import List
+
+class AddressSchema(Schema):
+    street: str
+    city: str
+    zipcode: str
+
+class UserSchema(Schema):
+    name: str
+    age: int
+    addresses: List[AddressSchema]
+</code></pre>
+<h2 id="自定義驗證"><a class="header" href="#自定義驗證">自定義驗證</a></h2>
+<p>你可以通過自定義驗證方法來添加額外的驗證邏輯。以下是一個示例，展示如何添加自定義驗證方法：</p>
+<pre><code class="language-python">from ninja import Schema
+from pydantic import validator
+
+class UserSchema(Schema):
+    name: str
+    age: int
+
+    @validator('age')
+    def check_age(cls, v):
+        if v &lt; 0:
+            raise ValueError('age must be positive')
+        return v
+</code></pre>
+<h2 id="處理-path-parameters"><a class="header" href="#處理-path-parameters">處理 Path Parameters</a></h2>
+<p>Path parameters 是 URL 路徑中的變量，用於動態生成 URL。Django Ninja 允許你在路由中定義路徑參數，並在視圖中訪問這些參數。</p>
+<pre><code class="language-python">from ninja import NinjaAPI
+
+api = NinjaAPI()
+
+@api.get(&quot;/items/{item_id}&quot;)
+def get_item(request, item_id: int):
+    # 在這裡處理路徑參數
+    return {&quot;item_id&quot;: item_id}
+</code></pre>
+<h2 id="查詢參數介紹"><a class="header" href="#查詢參數介紹">查詢參數介紹</a></h2>
+<p>查詢參數是 API 設計的基本部分，允許客戶端通過 URL 向伺服器傳遞額外的數據。在 Django Ninja 中，查詢參數會自動從不屬於路徑參數的函數參數中解釋出來。</p>
+<pre><code class="language-python">from ninja import NinjaAPI
+
+api = NinjaAPI()
+
+@api.get(&quot;/items&quot;)
+def list_items(request, limit: int = 10, offset: int = 0):
+    # 處理查詢參數
+    return {&quot;limit&quot;: limit, &quot;offset&quot;: offset}
+</code></pre>
+<p>在這個示例中，<code>limit</code> 和 <code>offset</code> 是具有預設值的查詢參數。</p>
+<p>你還可以使用 Schema 來封裝查詢參數，這提供了更好的組織和驗證。以下是使用 Schema 的示例：</p>
+<pre><code class="language-python">from datetime import date
+from typing import List
+from pydantic import Field
+from ninja import NinjaAPI, Query, Schema
+
+api = NinjaAPI()
+
+class Filters(Schema):
+    limit: int = 100
+    offset: int = None
+    query: str = None
+    category__in: List[str] = Field(None, alias=&quot;categories&quot;)
+
+@api.get(&quot;/filter&quot;)
+def events(request, filters: Filters = Query(...)):
+    return {&quot;filters&quot;: filters.dict()}
+</code></pre>
+<h2 id="處理-formdata"><a class="header" href="#處理-formdata">處理 FormData</a></h2>
+<p>Django Ninja 支援解析和驗證 <code>request.POST</code> 資料（即 <code>application/x-www-form-urlencoded</code> 或 <code>multipart/form-data</code>）以下是如何使用 <code>Form</code> 來處理表單資料的範例：</p>
+<pre><code class="language-python">from ninja import NinjaAPI, Form
+
+api = NinjaAPI()
+
+@api.post(&quot;/login&quot;)
+def login(request, username: Form[str], password: Form[str]):
+    return {'username': username, 'password': '*****'}
+</code></pre>
+<p>您也可以使用 <code>Schema</code> 來組織您的參數：</p>
+<pre><code class="language-python">from ninja import Form, Schema
+
+api = NinjaAPI()
+class Item(Schema):
+    name: str
+    description: str = None
+    price: float
+    quantity: int
+
+
+@api.post(&quot;/items&quot;)
+def create(request, item: Form[Item]):
+    return item
+</code></pre>
+<h2 id="過濾查詢集"><a class="header" href="#過濾查詢集">過濾查詢集</a></h2>
+<p>Django Ninja 提供了一個強大的過濾機制，允許您使用 <code>FilterSchema</code> 來處理查詢集的過濾。<code>FilterSchema</code> 是一個常規的 Schema，利用 Pydantic 的所有必要功能，並添加一些額外的特性來簡化將用戶面對的過濾參數轉換為數據庫查詢。</p>
+<h4 id="使用-filterschema"><a class="header" href="#使用-filterschema"><strong>使用 FilterSchema</strong></a></h4>
+<p>如果您希望用戶能夠根據多個不同的屬性過濾查詢集，將過濾器封裝到 <code>FilterSchema</code> 類中是有意義的。這樣可以方便地管理和應用過濾條件。</p>
+<pre><code class="language-python">from ninja import FilterSchema, Field
+from typing import Optional
+
+class BookFilterSchema(FilterSchema):
+  name: Optional[str] = None
+  author: Optional[str] = None
+  created_after: Optional[datetime] = None
+
+@api.get(&quot;/books&quot;)
+def list_books(request, filters: BookFilterSchema = Query(...)):
+    books = Book.objects.all()
+    books = filters.filter(books)
+    return books
+</code></pre>
+<h4 id="自定義過濾邏輯"><a class="header" href="#自定義過濾邏輯"><strong>自定義過濾邏輯</strong></a></h4>
+<p>您還可以獲取準備好的 Q 表達式並自行執行過濾。這允許您根據需要自定義過濾邏輯。</p>
+<pre><code class="language-python">class BookFilterSchema(FilterSchema):
+    search: Optional[str] = Field(None, q=['name__icontains',
+                                     'author__name__icontains',
+                                     'publisher__name__icontains'])
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="response-handling"><a class="header" href="#response-handling">Response Handling</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h1>
+<h2 id="定義-schema"><a class="header" href="#定義-schema">定義 Schema</a></h2>
+<p>在 Django Ninja 中，您可以使用 Pydantic 模型來定義 Schema。這個 Schema 指定了 API 返回的數據結構。以下是一個例子：</p>
+<pre><code class="language-python">from ninja import Schema
+
+class UserIn(Schema):
+    username: str
+    password: str
+
+
+class UserOut(Schema):
+    id: int
+    username: str
+
+
+@api.post(&quot;/users/&quot;, response=UserOut)
+def create_user(request, data: UserIn):
+    user = User(username=data.username)
+    user.set_password(data.password)
+    user.save()
+    return user
+</code></pre>
+<h2 id="修改-response"><a class="header" href="#修改-response">修改 Response</a></h2>
+<p>您可以添加標頭、更改狀態碼或修改響應數據：</p>
+<pre><code class="language-python">from django.http import HttpRequest, HttpResponse
+
+@api.get(&quot;/cookie/&quot;)
+def feed_cookiemonster(request: HttpRequest, response: HttpResponse):
+    # Set a cookie.
+    response.set_cookie(&quot;cookie&quot;, &quot;delicious&quot;)
+    # Set a header.
+    response[&quot;X-Cookiemonster&quot;] = &quot;blue&quot;
+    return {&quot;cookiemonster_happy&quot;: True}
+</code></pre>
+<h2 id="從-django-model-中定義回傳的-schema"><a class="header" href="#從-django-model-中定義回傳的-schema">從 Django Model 中定義回傳的 Schema</a></h2>
+<p>如果您想要從 Django Model 中定義回傳的 Schema，您可以使用 <code>ModelSchema</code>:</p>
+<pre><code class="language-python">from django.contrib.auth.models import User
+from ninja import ModelSchema
+
+class UserSchema(ModelSchema):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name', 'last_name']
+</code></pre>
+<h2 id="生成動態-schema"><a class="header" href="#生成動態-schema">生成動態 Schema</a></h2>
+<p><code>ModelSchema</code> 使用 <code>create_schema</code> 函數來生成動態 Schema，它是一種進階用法，需要小心使用。</p>
+<pre><code class="language-python">from django.contrib.auth.models import User
+from ninja.orm import create_schema
+
+# Using `fields`
+UserSchema = create_schema(User, fields=['id', 'username'])
+
+# Using `exclude`
+UserSchema = create_schema(User, exclude=[
+    'password', 'last_login', 'is_superuser', 'is_staff', 'groups', 'user_permissions']
+)
+</code></pre>
+<h2 id="覆寫-pydantic-設定"><a class="header" href="#覆寫-pydantic-設定">覆寫 Pydantic 設定</a></h2>
+<p>您可以在 <code>Schema</code> 中覆寫 Pydantic 設定，例如：</p>
+<pre><code class="language-python">from ninja import Schema
+
+
+def to_camel(string: str) -&gt; str:
+    return ''.join(word.capitalize() for word in string.split('_'))
+
+
+class CamelModelSchema(Schema):
+    str_field_name: str
+    float_field_name: float
+
+    class Config(Schema.Config):
+        alias_generator = to_camel
+</code></pre>
+<h2 id="分頁"><a class="header" href="#分頁">分頁</a></h2>
+<p>Django Ninja 支援分頁，你可以使用 <code>paginate</code> 函數來分頁查詢集：</p>
+<pre><code class="language-python">from ninja.pagination import paginate
+
+@api.get('/users', response=List[UserSchema])
+@paginate
+def list_users(request):
+    return User.objects.all()
+</code></pre>
+<p>內建的 <code>Pagination</code> 類別</p>
+<pre><code class="language-python">from ninja.pagination import paginate, LimitOffsetPagination
+
+@api.get('/users', response=List[UserSchema])
+@paginate(LimitOffsetPagination)
+def list_users(request):
+    return User.objects.all()
+</code></pre>
+<pre><code class="language-python">from ninja.pagination import paginate, PageNumberPagination
+
+@api.get('/users', response=List[UserSchema])
+@paginate(PageNumberPagination)
+def list_users(request):
+    return User.objects.all()
+</code></pre>
+<p><strong>使用 <code>RouterPaginated</code> 路由器</strong>: 自動加上分頁功能</p>
+<pre><code class="language-python">from ninja.pagination import RouterPaginated
+
+router = RouterPaginated()
+
+
+@router.get(&quot;/items&quot;, response=List[MySchema])
+def items(request):
+    return MyModel.objects.all()
+
+@router.get(&quot;/other-items&quot;, response=List[OtherSchema])
+def ohter_items(request):
+    return OtherModel.objects.all()
+</code></pre>
+<h2 id="response-renderers"><a class="header" href="#response-renderers">Response Renderers</a></h2>
+<p>Django Ninja 支援多種 Response Renderers，你可以使用 <code>renderer</code> 參數來指定 Response Renderer：</p>
+<p>自訂 Response Renderer，要實現 <code>render</code> 介面:</p>
+<pre><code class="language-python">from ninja import NinjaAPI
+from ninja.renderers import BaseRenderer
+
+
+class MyRenderer(BaseRenderer):
+    media_type = &quot;text/plain&quot;
+
+    def render(self, request, data, *, response_status):
+        return ... # your serialization here
+
+api = NinjaAPI(renderer=MyRenderer())
+</code></pre>
+<p><code>render</code> 函數接受三個主要的參數：</p>
+<ul>
+<li>request -&gt; HTTP Request object</li>
+<li>data -&gt; 需要被序列化的 object</li>
+<li>response_status -&gt; <code>int</code> 型別，HTTP status code 回傳給客戶端</li>
+</ul>
+<p>自訂 Response Renderer 使用 <code>orjson</code> 庫，以下是一個示例：</p>
+<pre><code class="language-python">import orjson
+from ninja import NinjaAPI
+from ninja.renderers import BaseRenderer
+
+
+class ORJSONRenderer(BaseRenderer):
+    media_type = &quot;application/json&quot;
+
+    def render(self, request, data, *, response_status):
+        return orjson.dumps(data)
+
+api = NinjaAPI(renderer=ORJSONRenderer())
+</code></pre>
+<p>自訂 XML Response Renderer: </p>
+<pre><code class="language-python">from io import StringIO
+from django.utils.encoding import force_str
+from django.utils.xmlutils import SimplerXMLGenerator
+from ninja import NinjaAPI
+from ninja.renderers import BaseRenderer
+
+
+class XMLRenderer(BaseRenderer):
+    media_type = &quot;text/xml&quot;
+
+    def render(self, request, data, *, response_status):
+        stream = StringIO()
+        xml = SimplerXMLGenerator(stream, &quot;utf-8&quot;)
+        xml.startDocument()
+        xml.startElement(&quot;data&quot;, {})
+        self._to_xml(xml, data)
+        xml.endElement(&quot;data&quot;)
+        xml.endDocument()
+        return stream.getvalue()
+
+    def _to_xml(self, xml, data):
+        if isinstance(data, (list, tuple)):
+            for item in data:
+                xml.startElement(&quot;item&quot;, {})
+                self._to_xml(xml, item)
+                xml.endElement(&quot;item&quot;)
+
+        elif isinstance(data, dict):
+            for key, value in data.items():
+                xml.startElement(key, {})
+                self._to_xml(xml, value)
+                xml.endElement(key)
+
+        elif data is None:
+            # Don't output any value
+            pass
+
+        else:
+            xml.characters(force_str(data))
+
+
+api = NinjaAPI(renderer=XMLRenderer())
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="routers"><a class="header" href="#routers">Routers</a></h1>
+<h2 id="創建和配置路由器"><a class="header" href="#創建和配置路由器">創建和配置路由器</a></h2>
+<p>在您的應用程序中創建一個新的 Python 文件（例如 events/api.py），並定義一個路由器：</p>
+<pre><code class="language-python">from ninja import Router
+from .models import Event
+
+router = Router()
+
+@router.get('/')
+def list_events(request):
+    return [{&quot;id&quot;: e.id, &quot;title&quot;: e.title} for e in Event.objects.all()]
+
+@router.get('/{event_id}')
+def event_details(request, event_id: int):
+    event = Event.objects.get(id=event_id)
+    return {&quot;title&quot;: event.title, &quot;details&quot;: event.details}
+</code></pre>
+<h2 id="添加路由器到-api"><a class="header" href="#添加路由器到-api">添加路由器到 API：</a></h2>
+<p>在您的主 API 文件中（例如 api.py），導入並添加路由器：</p>
+<pre><code class="language-python">from ninja import NinjaAPI
+from events.api import router as events_router
+
+api = NinjaAPI()
+api.add_router(&quot;/events/&quot;, events_router)
+</code></pre>
+<p>您還可以通過 Python 路徑添加路由器：</p>
+<pre><code class="language-python">api.add_router(&quot;/news/&quot;, &quot;news.api.router&quot;)
+api.add_router(&quot;/blogs/&quot;, &quot;blogs.api.router&quot;)
+</code></pre>
+<h2 id="使用標籤和身份驗證"><a class="header" href="#使用標籤和身份驗證">使用標籤和身份驗證</a></h2>
+<p>您可以使用 tags 參數為路由器中的所有操作添加標籤，並使用 auth 參數應用身份驗證：</p>
+<pre><code class="language-python">from ninja import NinjaAPI, Router
+from ninja.security import BasicAuth
+
+router = Router(tags=[&quot;events&quot;])
+
+@router.get('/')
+def list_events(request):
+    return [{&quot;id&quot;: e.id, &quot;title&quot;: e.title} for e in Event.objects.all()]
+
+api = NinjaAPI()
+api.add_router(&quot;/events/&quot;, router, auth=BasicAuth())
+</code></pre>
+<h2 id="nested-routers"><a class="header" href="#nested-routers">Nested routers</a></h2>
+<pre><code class="language-python">from django.contrib import admin
+from django.urls import path
+from ninja import NinjaAPI, Router
+
+api = NinjaAPI()
+
+first_router = Router()
+second_router = Router()
+third_router = Router()
+
+
+@api.get(&quot;/add&quot;)
+def add(request, a: int, b: int):
+    return {&quot;result&quot;: a + b}
+
+
+@first_router.get(&quot;/add&quot;)
+def add(request, a: int, b: int):
+    return {&quot;result&quot;: a + b}
+
+
+@second_router.get(&quot;/add&quot;)
+def add(request, a: int, b: int):
+    return {&quot;result&quot;: a + b}
+
+
+@third_router.get(&quot;/add&quot;)
+def add(request, a: int, b: int):
+    return {&quot;result&quot;: a + b}
+
+
+second_router.add_router(&quot;l3&quot;, third_router)
+first_router.add_router(&quot;l2&quot;, second_router)
+api.add_router(&quot;l1&quot;, first_router)
+
+urlpatterns = [
+    path(&quot;admin/&quot;, admin.site.urls),
+    path(&quot;api/&quot;, api.urls),
+]
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="authentication"><a class="header" href="#authentication">Authentication</a></h1>
+<h2 id="基本身份驗證"><a class="header" href="#基本身份驗證">基本身份驗證</a></h2>
+<p>基本身份驗證是最簡單的身份驗證方法之一，它要求用戶提供用戶名和密碼。以下是如何在 Django Ninja 中實現基本身份驗證的示例：</p>
+<pre><code class="language-python">from ninja.security import HttpBasicAuth
+
+auth = HttpBasicAuth()
+
+@api.get(&quot;/protected&quot;, auth=auth)
+def protected_operation(request):
+    return {&quot;message&quot;: &quot;This is a protected endpoint&quot;}
+</code></pre>
+<h2 id="api-密鑰身份驗證"><a class="header" href="#api-密鑰身份驗證">API 密鑰身份驗證</a></h2>
+<p>API 密鑰身份驗證要求用戶提供一個有效的 API 密鑰。以下是如何實現 API 密鑰身份驗證的示例：</p>
+<pre><code class="language-python">from ninja.security import APIKeyHeader
+
+class APIKeyAuth(APIKeyHeader):
+    param_name = &quot;X-API-Key&quot;
+
+    def authenticate(self, request, key):
+        if key == &quot;mysecretkey&quot;:
+            return key
+
+auth = APIKeyAuth()
+
+@api.get(&quot;/protected&quot;, auth=auth)
+def protected_operation(request):
+    return {&quot;message&quot;: &quot;This is a protected endpoint&quot;}
+</code></pre>
+<h2 id="jwt-身份驗證"><a class="header" href="#jwt-身份驗證">JWT 身份驗證</a></h2>
+<p>JWT（JSON Web Token）身份驗證是一種無狀態的身份驗證方法，適合用於分佈式系統。以下是如何實現 JWT 身份驗證的示例：</p>
+<pre><code class="language-python">from ninja.security import HttpBearer
+import jwt
+
+class JWTAuth(HttpBearer):
+    def authenticate(self, request, token):
+        try:
+            payload = jwt.decode(token, &quot;secret&quot;, algorithms=[&quot;HS256&quot;])
+            return payload
+        except jwt.PyJWTError:
+            return None
+
+auth = JWTAuth()
+
+@api.get(&quot;/protected&quot;, auth=auth)
+def protected_operation(request):
+    return {&quot;message&quot;: &quot;This is a protected endpoint&quot;}
+</code></pre>
+<h2 id="多重身份驗證"><a class="header" href="#多重身份驗證">多重身份驗證</a></h2>
+<p>您可以組合多種身份驗證方法來保護您的 API 端點。以下是如何實現多重身份驗證的示例：</p>
+<pre><code class="language-python">from ninja.security import HttpBasicAuth, APIKeyHeader
+
+class APIKeyAuth(APIKeyHeader):
+    param_name = &quot;X-API-Key&quot;
+
+    def authenticate(self, request, key):
+        if key == &quot;mysecretkey&quot;:
+            return key
+
+basic_auth = HttpBasicAuth()
+api_key_auth = APIKeyAuth()
+
+@api.get(&quot;/protected&quot;, auth=[basic_auth, api_key_auth])
+def protected_operation(request):
+    return {&quot;message&quot;: &quot;This is a protected endpoint&quot;}
+</code></pre>
+<h2 id="router-身份驗證"><a class="header" href="#router-身份驗證">Router 身份驗證</a></h2>
+<p>如果您想要在 API 端點中使用身份驗證，但不想在每個端點中重新定義身份驗證，可以使用 Router 身份驗證。以下是如何實現 Router 身份驗證的示例：</p>
+<pre><code class="language-python">from ninja import Router
+from ninja.security import HttpBasicAuth
+
+auth = HttpBasicAuth()
+router = Router(auth=auth)
+
+@router.get(&quot;/protected&quot;)
+def protected_operation(request):
+    return {&quot;message&quot;: &quot;This is a protected endpoint&quot;}
+
+api.add_router(&quot;/protected&quot;, router)
+</code></pre>
+<h2 id="自定義身份驗證"><a class="header" href="#自定義身份驗證">自定義身份驗證</a></h2>
+<p>如果內置的身份驗證方法不滿足您的需求，您可以自定義身份驗證類。以下是如何自定義身份驗證的示例：</p>
+<pre><code class="language-python">def ip_whitelist(request):
+    if request.META[&quot;REMOTE_ADDR&quot;] == &quot;8.8.8.8&quot;:
+        return &quot;8.8.8.8&quot;
+
+
+@api.get(&quot;/ipwhitelist&quot;, auth=ip_whitelist)
+def ipwhitelist(request):
+    return f&quot;Authenticated client, IP = {request.auth}&quot;
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="throttling"><a class="header" href="#throttling">Throttling</a></h1>
+<h2 id="節流概述"><a class="header" href="#節流概述">節流概述</a></h2>
+<p>Django Ninja 的流量限制功能可以幫助控制 API 的請求頻率，避免過多請求對伺服器造成負擔。流量限制可以在以下層級進行設置：</p>
+<ol>
+<li>全局層級：透過 throttle 參數設定，適用於所有 API 請求。</li>
+<li>路由層級：在路由註冊時設定流量限制。</li>
+<li>操作層級：在具體操作上設置特定的流量限制，會覆蓋全局與路由層級的設定。</li>
+</ol>
+<h2 id="內建流量限制"><a class="header" href="#內建流量限制">內建流量限制</a></h2>
+<p>Django Ninja 提供了多種內建流量限制器，例如：</p>
+<ul>
+<li><code>AnonRateThrottle</code>：限制未認證用戶的請求頻率。</li>
+<li><code>UserRateThrottle</code>：根據用戶 ID 限制已認證用戶的請求頻率。</li>
+<li><code>AuthRateThrottle</code>：根據已認證用戶的身份進行限制。</li>
+</ul>
+<pre><code class="language-python">from ninja.throttling import AnonRateThrottle, AuthRateThrottle
+
+api = NinjaAPI(
+    throttle=[
+        AnonRateThrottle('10/s'),
+        AuthRateThrottle('100/s'),
+    ],
+)
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="testing-1"><a class="header" href="#testing-1">Testing</a></h1>
+<h2 id="測試範例-api"><a class="header" href="#測試範例-api">測試範例 API</a></h2>
+<pre><code class="language-python">from ninja import NinjaAPI, Schema
+
+api = NinjaAPI()
+router = Router()
+
+class HelloResponse(Schema):
+    msg: str
+
+@router.get(&quot;/hello&quot;, response=HelloResponse)
+def hello(request):
+    return {&quot;msg&quot;: &quot;Hello World&quot;}
+
+api.add_router(&quot;&quot;, router)
+</code></pre>
+<p>使用 Django <code>TestCase</code></p>
+<pre><code class="language-python">from django.test import TestCase
+from ninja.testing import TestClient
+
+class HelloTest(TestCase):
+    def test_hello(self):
+        client = TestClient(router)
+        response = client.get(&quot;/hello&quot;)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {&quot;msg&quot;: &quot;Hello World&quot;})
+</code></pre>
+<p>訪問反序列化數據</p>
+<pre><code class="language-python">self.assertEqual(response.data, {&quot;msg&quot;: &quot;Hello World&quot;})
+</code></pre>
+<h2 id="添加自定義屬性到請求對象"><a class="header" href="#添加自定義屬性到請求對象">添加自定義屬性到請求對象</a></h2>
+<pre><code class="language-python">class HelloTest(TestCase):
+    def test_hello(self):
+        client = TestClient(router)
+        # request.company_id 將在視圖中設置
+        response = client.get(&quot;/hello&quot;, company_id=1)
+</code></pre>
+<h2 id="指定標頭"><a class="header" href="#指定標頭">指定標頭</a></h2>
+<p>您可以在測試類實例化和實際請求中指定標頭：</p>
+<pre><code class="language-python">client = TestClient(router, headers={&quot;A&quot;: &quot;a&quot;, &quot;B&quot;: &quot;b&quot;})
+# 請求將使用 {&quot;A&quot;: &quot;na&quot;, &quot;B&quot;: &quot;b&quot;, &quot;C&quot;: &quot;nc&quot;} 標頭
+response = client.get(&quot;/test-headers&quot;, headers={&quot;A&quot;: &quot;na&quot;, &quot;C&quot;: &quot;nc&quot;})
+</code></pre>
 
                     </main>
 

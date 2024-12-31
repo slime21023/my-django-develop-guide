@@ -23,3 +23,9 @@
 * [Authentication](./ninja_authentication.md)
 * [Throttling](./ninja_throttling.md)
 * [Testing](./ninja_testing.md)
+
+# Django ORM
+
+
+
+# Django Ninja JWT 

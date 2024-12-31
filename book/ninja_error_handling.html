@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html" class="active"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html" class="active"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django ORM</li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,6 +174,195 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="error-handling"><a class="header" href="#error-handling">Error Handling</a></h1>
+<h2 id="定義-schema"><a class="header" href="#定義-schema">定義 Schema</a></h2>
+<p>在 Django Ninja 中，您可以使用 Pydantic 模型來定義 Schema。這個 Schema 指定了 API 返回的數據結構。以下是一個例子：</p>
+<pre><code class="language-python">from ninja import Schema
+
+class UserIn(Schema):
+    username: str
+    password: str
+
+
+class UserOut(Schema):
+    id: int
+    username: str
+
+
+@api.post(&quot;/users/&quot;, response=UserOut)
+def create_user(request, data: UserIn):
+    user = User(username=data.username)
+    user.set_password(data.password)
+    user.save()
+    return user
+</code></pre>
+<h2 id="修改-response"><a class="header" href="#修改-response">修改 Response</a></h2>
+<p>您可以添加標頭、更改狀態碼或修改響應數據：</p>
+<pre><code class="language-python">from django.http import HttpRequest, HttpResponse
+
+@api.get(&quot;/cookie/&quot;)
+def feed_cookiemonster(request: HttpRequest, response: HttpResponse):
+    # Set a cookie.
+    response.set_cookie(&quot;cookie&quot;, &quot;delicious&quot;)
+    # Set a header.
+    response[&quot;X-Cookiemonster&quot;] = &quot;blue&quot;
+    return {&quot;cookiemonster_happy&quot;: True}
+</code></pre>
+<h2 id="從-django-model-中定義回傳的-schema"><a class="header" href="#從-django-model-中定義回傳的-schema">從 Django Model 中定義回傳的 Schema</a></h2>
+<p>如果您想要從 Django Model 中定義回傳的 Schema，您可以使用 <code>ModelSchema</code>:</p>
+<pre><code class="language-python">from django.contrib.auth.models import User
+from ninja import ModelSchema
+
+class UserSchema(ModelSchema):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'first_name', 'last_name']
+</code></pre>
+<h2 id="生成動態-schema"><a class="header" href="#生成動態-schema">生成動態 Schema</a></h2>
+<p><code>ModelSchema</code> 使用 <code>create_schema</code> 函數來生成動態 Schema，它是一種進階用法，需要小心使用。</p>
+<pre><code class="language-python">from django.contrib.auth.models import User
+from ninja.orm import create_schema
+
+# Using `fields`
+UserSchema = create_schema(User, fields=['id', 'username'])
+
+# Using `exclude`
+UserSchema = create_schema(User, exclude=[
+    'password', 'last_login', 'is_superuser', 'is_staff', 'groups', 'user_permissions']
+)
+</code></pre>
+<h2 id="覆寫-pydantic-設定"><a class="header" href="#覆寫-pydantic-設定">覆寫 Pydantic 設定</a></h2>
+<p>您可以在 <code>Schema</code> 中覆寫 Pydantic 設定，例如：</p>
+<pre><code class="language-python">from ninja import Schema
+
+
+def to_camel(string: str) -&gt; str:
+    return ''.join(word.capitalize() for word in string.split('_'))
+
+
+class CamelModelSchema(Schema):
+    str_field_name: str
+    float_field_name: float
+
+    class Config(Schema.Config):
+        alias_generator = to_camel
+</code></pre>
+<h2 id="分頁"><a class="header" href="#分頁">分頁</a></h2>
+<p>Django Ninja 支援分頁，你可以使用 <code>paginate</code> 函數來分頁查詢集：</p>
+<pre><code class="language-python">from ninja.pagination import paginate
+
+@api.get('/users', response=List[UserSchema])
+@paginate
+def list_users(request):
+    return User.objects.all()
+</code></pre>
+<p>內建的 <code>Pagination</code> 類別</p>
+<pre><code class="language-python">from ninja.pagination import paginate, LimitOffsetPagination
+
+@api.get('/users', response=List[UserSchema])
+@paginate(LimitOffsetPagination)
+def list_users(request):
+    return User.objects.all()
+</code></pre>
+<pre><code class="language-python">from ninja.pagination import paginate, PageNumberPagination
+
+@api.get('/users', response=List[UserSchema])
+@paginate(PageNumberPagination)
+def list_users(request):
+    return User.objects.all()
+</code></pre>
+<p><strong>使用 <code>RouterPaginated</code> 路由器</strong>: 自動加上分頁功能</p>
+<pre><code class="language-python">from ninja.pagination import RouterPaginated
+
+router = RouterPaginated()
+
+
+@router.get(&quot;/items&quot;, response=List[MySchema])
+def items(request):
+    return MyModel.objects.all()
+
+@router.get(&quot;/other-items&quot;, response=List[OtherSchema])
+def ohter_items(request):
+    return OtherModel.objects.all()
+</code></pre>
+<h2 id="response-renderers"><a class="header" href="#response-renderers">Response Renderers</a></h2>
+<p>Django Ninja 支援多種 Response Renderers，你可以使用 <code>renderer</code> 參數來指定 Response Renderer：</p>
+<p>自訂 Response Renderer，要實現 <code>render</code> 介面:</p>
+<pre><code class="language-python">from ninja import NinjaAPI
+from ninja.renderers import BaseRenderer
+
+
+class MyRenderer(BaseRenderer):
+    media_type = &quot;text/plain&quot;
+
+    def render(self, request, data, *, response_status):
+        return ... # your serialization here
+
+api = NinjaAPI(renderer=MyRenderer())
+</code></pre>
+<p><code>render</code> 函數接受三個主要的參數：</p>
+<ul>
+<li>request -&gt; HTTP Request object</li>
+<li>data -&gt; 需要被序列化的 object</li>
+<li>response_status -&gt; <code>int</code> 型別，HTTP status code 回傳給客戶端</li>
+</ul>
+<p>自訂 Response Renderer 使用 <code>orjson</code> 庫，以下是一個示例：</p>
+<pre><code class="language-python">import orjson
+from ninja import NinjaAPI
+from ninja.renderers import BaseRenderer
+
+
+class ORJSONRenderer(BaseRenderer):
+    media_type = &quot;application/json&quot;
+
+    def render(self, request, data, *, response_status):
+        return orjson.dumps(data)
+
+api = NinjaAPI(renderer=ORJSONRenderer())
+</code></pre>
+<p>自訂 XML Response Renderer: </p>
+<pre><code class="language-python">from io import StringIO
+from django.utils.encoding import force_str
+from django.utils.xmlutils import SimplerXMLGenerator
+from ninja import NinjaAPI
+from ninja.renderers import BaseRenderer
+
+
+class XMLRenderer(BaseRenderer):
+    media_type = &quot;text/xml&quot;
+
+    def render(self, request, data, *, response_status):
+        stream = StringIO()
+        xml = SimplerXMLGenerator(stream, &quot;utf-8&quot;)
+        xml.startDocument()
+        xml.startElement(&quot;data&quot;, {})
+        self._to_xml(xml, data)
+        xml.endElement(&quot;data&quot;)
+        xml.endDocument()
+        return stream.getvalue()
+
+    def _to_xml(self, xml, data):
+        if isinstance(data, (list, tuple)):
+            for item in data:
+                xml.startElement(&quot;item&quot;, {})
+                self._to_xml(xml, item)
+                xml.endElement(&quot;item&quot;)
+
+        elif isinstance(data, dict):
+            for key, value in data.items():
+                xml.startElement(key, {})
+                self._to_xml(xml, value)
+                xml.endElement(key)
+
+        elif data is None:
+            # Don't output any value
+            pass
+
+        else:
+            xml.characters(force_str(data))
+
+
+api = NinjaAPI(renderer=XMLRenderer())
+</code></pre>
 
                     </main>
 

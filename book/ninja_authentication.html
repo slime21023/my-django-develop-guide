@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html" class="active"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html" class="active"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django ORM</li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,6 +174,95 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="authentication"><a class="header" href="#authentication">Authentication</a></h1>
+<h2 id="基本身份驗證"><a class="header" href="#基本身份驗證">基本身份驗證</a></h2>
+<p>基本身份驗證是最簡單的身份驗證方法之一，它要求用戶提供用戶名和密碼。以下是如何在 Django Ninja 中實現基本身份驗證的示例：</p>
+<pre><code class="language-python">from ninja.security import HttpBasicAuth
+
+auth = HttpBasicAuth()
+
+@api.get(&quot;/protected&quot;, auth=auth)
+def protected_operation(request):
+    return {&quot;message&quot;: &quot;This is a protected endpoint&quot;}
+</code></pre>
+<h2 id="api-密鑰身份驗證"><a class="header" href="#api-密鑰身份驗證">API 密鑰身份驗證</a></h2>
+<p>API 密鑰身份驗證要求用戶提供一個有效的 API 密鑰。以下是如何實現 API 密鑰身份驗證的示例：</p>
+<pre><code class="language-python">from ninja.security import APIKeyHeader
+
+class APIKeyAuth(APIKeyHeader):
+    param_name = &quot;X-API-Key&quot;
+
+    def authenticate(self, request, key):
+        if key == &quot;mysecretkey&quot;:
+            return key
+
+auth = APIKeyAuth()
+
+@api.get(&quot;/protected&quot;, auth=auth)
+def protected_operation(request):
+    return {&quot;message&quot;: &quot;This is a protected endpoint&quot;}
+</code></pre>
+<h2 id="jwt-身份驗證"><a class="header" href="#jwt-身份驗證">JWT 身份驗證</a></h2>
+<p>JWT（JSON Web Token）身份驗證是一種無狀態的身份驗證方法，適合用於分佈式系統。以下是如何實現 JWT 身份驗證的示例：</p>
+<pre><code class="language-python">from ninja.security import HttpBearer
+import jwt
+
+class JWTAuth(HttpBearer):
+    def authenticate(self, request, token):
+        try:
+            payload = jwt.decode(token, &quot;secret&quot;, algorithms=[&quot;HS256&quot;])
+            return payload
+        except jwt.PyJWTError:
+            return None
+
+auth = JWTAuth()
+
+@api.get(&quot;/protected&quot;, auth=auth)
+def protected_operation(request):
+    return {&quot;message&quot;: &quot;This is a protected endpoint&quot;}
+</code></pre>
+<h2 id="多重身份驗證"><a class="header" href="#多重身份驗證">多重身份驗證</a></h2>
+<p>您可以組合多種身份驗證方法來保護您的 API 端點。以下是如何實現多重身份驗證的示例：</p>
+<pre><code class="language-python">from ninja.security import HttpBasicAuth, APIKeyHeader
+
+class APIKeyAuth(APIKeyHeader):
+    param_name = &quot;X-API-Key&quot;
+
+    def authenticate(self, request, key):
+        if key == &quot;mysecretkey&quot;:
+            return key
+
+basic_auth = HttpBasicAuth()
+api_key_auth = APIKeyAuth()
+
+@api.get(&quot;/protected&quot;, auth=[basic_auth, api_key_auth])
+def protected_operation(request):
+    return {&quot;message&quot;: &quot;This is a protected endpoint&quot;}
+</code></pre>
+<h2 id="router-身份驗證"><a class="header" href="#router-身份驗證">Router 身份驗證</a></h2>
+<p>如果您想要在 API 端點中使用身份驗證，但不想在每個端點中重新定義身份驗證，可以使用 Router 身份驗證。以下是如何實現 Router 身份驗證的示例：</p>
+<pre><code class="language-python">from ninja import Router
+from ninja.security import HttpBasicAuth
+
+auth = HttpBasicAuth()
+router = Router(auth=auth)
+
+@router.get(&quot;/protected&quot;)
+def protected_operation(request):
+    return {&quot;message&quot;: &quot;This is a protected endpoint&quot;}
+
+api.add_router(&quot;/protected&quot;, router)
+</code></pre>
+<h2 id="自定義身份驗證"><a class="header" href="#自定義身份驗證">自定義身份驗證</a></h2>
+<p>如果內置的身份驗證方法不滿足您的需求，您可以自定義身份驗證類。以下是如何自定義身份驗證的示例：</p>
+<pre><code class="language-python">def ip_whitelist(request):
+    if request.META[&quot;REMOTE_ADDR&quot;] == &quot;8.8.8.8&quot;:
+        return &quot;8.8.8.8&quot;
+
+
+@api.get(&quot;/ipwhitelist&quot;, auth=ip_whitelist)
+def ipwhitelist(request):
+    return f&quot;Authenticated client, IP = {request.auth}&quot;
+</code></pre>
 
                     </main>
 

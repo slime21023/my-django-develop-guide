@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html" class="active"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html" class="active"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django ORM</li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -174,6 +174,89 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="routers"><a class="header" href="#routers">Routers</a></h1>
+<h2 id="創建和配置路由器"><a class="header" href="#創建和配置路由器">創建和配置路由器</a></h2>
+<p>在您的應用程序中創建一個新的 Python 文件（例如 events/api.py），並定義一個路由器：</p>
+<pre><code class="language-python">from ninja import Router
+from .models import Event
+
+router = Router()
+
+@router.get('/')
+def list_events(request):
+    return [{&quot;id&quot;: e.id, &quot;title&quot;: e.title} for e in Event.objects.all()]
+
+@router.get('/{event_id}')
+def event_details(request, event_id: int):
+    event = Event.objects.get(id=event_id)
+    return {&quot;title&quot;: event.title, &quot;details&quot;: event.details}
+</code></pre>
+<h2 id="添加路由器到-api"><a class="header" href="#添加路由器到-api">添加路由器到 API：</a></h2>
+<p>在您的主 API 文件中（例如 api.py），導入並添加路由器：</p>
+<pre><code class="language-python">from ninja import NinjaAPI
+from events.api import router as events_router
+
+api = NinjaAPI()
+api.add_router(&quot;/events/&quot;, events_router)
+</code></pre>
+<p>您還可以通過 Python 路徑添加路由器：</p>
+<pre><code class="language-python">api.add_router(&quot;/news/&quot;, &quot;news.api.router&quot;)
+api.add_router(&quot;/blogs/&quot;, &quot;blogs.api.router&quot;)
+</code></pre>
+<h2 id="使用標籤和身份驗證"><a class="header" href="#使用標籤和身份驗證">使用標籤和身份驗證</a></h2>
+<p>您可以使用 tags 參數為路由器中的所有操作添加標籤，並使用 auth 參數應用身份驗證：</p>
+<pre><code class="language-python">from ninja import NinjaAPI, Router
+from ninja.security import BasicAuth
+
+router = Router(tags=[&quot;events&quot;])
+
+@router.get('/')
+def list_events(request):
+    return [{&quot;id&quot;: e.id, &quot;title&quot;: e.title} for e in Event.objects.all()]
+
+api = NinjaAPI()
+api.add_router(&quot;/events/&quot;, router, auth=BasicAuth())
+</code></pre>
+<h2 id="nested-routers"><a class="header" href="#nested-routers">Nested routers</a></h2>
+<pre><code class="language-python">from django.contrib import admin
+from django.urls import path
+from ninja import NinjaAPI, Router
+
+api = NinjaAPI()
+
+first_router = Router()
+second_router = Router()
+third_router = Router()
+
+
+@api.get(&quot;/add&quot;)
+def add(request, a: int, b: int):
+    return {&quot;result&quot;: a + b}
+
+
+@first_router.get(&quot;/add&quot;)
+def add(request, a: int, b: int):
+    return {&quot;result&quot;: a + b}
+
+
+@second_router.get(&quot;/add&quot;)
+def add(request, a: int, b: int):
+    return {&quot;result&quot;: a + b}
+
+
+@third_router.get(&quot;/add&quot;)
+def add(request, a: int, b: int):
+    return {&quot;result&quot;: a + b}
+
+
+second_router.add_router(&quot;l3&quot;, third_router)
+first_router.add_router(&quot;l2&quot;, second_router)
+api.add_router(&quot;l1&quot;, first_router)
+
+urlpatterns = [
+    path(&quot;admin/&quot;, admin.site.urls),
+    path(&quot;api/&quot;, api.urls),
+]
+</code></pre>
 
                     </main>
 
