@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>URLs - Django Develop Guide</title>
+        <title>ContentTypes Framework - Django Develop Guide</title>
 
 
         <!-- Custom HTML head -->
@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html" class="active"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django ORM</li><li class="chapter-item expanded "><a href="django_orm_models.html"><strong aria-hidden="true">19.</strong> Defining Django Models</a></li><li class="chapter-item expanded "><a href="django_orm_creating_data.html"><strong aria-hidden="true">20.</strong> Creating Data with Django Models</a></li><li class="chapter-item expanded "><a href="django_orm_query.html"><strong aria-hidden="true">21.</strong> Query and Filter Records</a></li><li class="chapter-item expanded "><a href="django_orm_relationships.html"><strong aria-hidden="true">22.</strong> Relationships in the Django ORM</a></li><li class="chapter-item expanded "><a href="django_orm_aggregation.html"><strong aria-hidden="true">23.</strong> Aggregating and Grouping data</a></li><li class="chapter-item expanded "><a href="django_orm_subquery.html"><strong aria-hidden="true">24.</strong> Subqueries, Conditional Expressions</a></li><li class="chapter-item expanded "><a href="django_orm_transactions.html"><strong aria-hidden="true">25.</strong> Transactions</a></li><li class="chapter-item expanded "><a href="django_orm_indexes.html"><strong aria-hidden="true">26.</strong> Indexes, Constraints</a></li><li class="chapter-item expanded "><a href="django_orm_content_types.html"><strong aria-hidden="true">27.</strong> ContentTypes Framework</a></li><li class="chapter-item expanded "><a href="django_orm_geo_django.html"><strong aria-hidden="true">28.</strong> GeoDjango</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja JWT</li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><li class="part-title">Basic</li><li class="chapter-item expanded "><a href="project_setup.html"><strong aria-hidden="true">1.</strong> Project Setup</a></li><li class="chapter-item expanded "><a href="project_structure.html"><strong aria-hidden="true">2.</strong> Project Structure</a></li><li class="chapter-item expanded "><a href="database_setup.html"><strong aria-hidden="true">3.</strong> Database Setup</a></li><li class="chapter-item expanded "><a href="models.html"><strong aria-hidden="true">4.</strong> Models</a></li><li class="chapter-item expanded "><a href="views.html"><strong aria-hidden="true">5.</strong> Views</a></li><li class="chapter-item expanded "><a href="templates.html"><strong aria-hidden="true">6.</strong> Templates</a></li><li class="chapter-item expanded "><a href="urls.html"><strong aria-hidden="true">7.</strong> URLs</a></li><li class="chapter-item expanded "><a href="admin.html"><strong aria-hidden="true">8.</strong> Admin</a></li><li class="chapter-item expanded "><a href="static_files.html"><strong aria-hidden="true">9.</strong> Static Files</a></li><li class="chapter-item expanded "><a href="testing.html"><strong aria-hidden="true">10.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja</li><li class="chapter-item expanded "><a href="django_ninja_intro.html"><strong aria-hidden="true">11.</strong> Django Ninja Intro</a></li><li class="chapter-item expanded "><a href="ninja_input_handling.html"><strong aria-hidden="true">12.</strong> Input Handling</a></li><li class="chapter-item expanded "><a href="ninja_response_handling.html"><strong aria-hidden="true">13.</strong> Response Handling</a></li><li class="chapter-item expanded "><a href="ninja_error_handling.html"><strong aria-hidden="true">14.</strong> Error Handling</a></li><li class="chapter-item expanded "><a href="ninja_routers.html"><strong aria-hidden="true">15.</strong> Routers</a></li><li class="chapter-item expanded "><a href="ninja_authentication.html"><strong aria-hidden="true">16.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="ninja_throttling.html"><strong aria-hidden="true">17.</strong> Throttling</a></li><li class="chapter-item expanded "><a href="ninja_testing.html"><strong aria-hidden="true">18.</strong> Testing</a></li><li class="chapter-item expanded affix "><li class="part-title">Django ORM</li><li class="chapter-item expanded "><a href="django_orm_models.html"><strong aria-hidden="true">19.</strong> Defining Django Models</a></li><li class="chapter-item expanded "><a href="django_orm_creating_data.html"><strong aria-hidden="true">20.</strong> Creating Data with Django Models</a></li><li class="chapter-item expanded "><a href="django_orm_query.html"><strong aria-hidden="true">21.</strong> Query and Filter Records</a></li><li class="chapter-item expanded "><a href="django_orm_relationships.html"><strong aria-hidden="true">22.</strong> Relationships in the Django ORM</a></li><li class="chapter-item expanded "><a href="django_orm_aggregation.html"><strong aria-hidden="true">23.</strong> Aggregating and Grouping data</a></li><li class="chapter-item expanded "><a href="django_orm_subquery.html"><strong aria-hidden="true">24.</strong> Subqueries, Conditional Expressions</a></li><li class="chapter-item expanded "><a href="django_orm_transactions.html"><strong aria-hidden="true">25.</strong> Transactions</a></li><li class="chapter-item expanded "><a href="django_orm_indexes.html"><strong aria-hidden="true">26.</strong> Indexes, Constraints</a></li><li class="chapter-item expanded "><a href="django_orm_content_types.html" class="active"><strong aria-hidden="true">27.</strong> ContentTypes Framework</a></li><li class="chapter-item expanded "><a href="django_orm_geo_django.html"><strong aria-hidden="true">28.</strong> GeoDjango</a></li><li class="chapter-item expanded affix "><li class="part-title">Django Ninja JWT</li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle">
                 <div class="sidebar-resize-indicator"></div>
@@ -173,117 +173,130 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="urls"><a class="header" href="#urls">URLs</a></h1>
-<h2 id="什麼是-django-url-配置"><a class="header" href="#什麼是-django-url-配置">什麼是 Django URL 配置？</a></h2>
-<p>Django URL 配置是將 URL 模式映射到視圖的過程。它允許你定義 URL 模式，並指定當這些模式匹配時應該調用哪個視圖。</p>
-<h2 id="基本-url-配置"><a class="header" href="#基本-url-配置">基本 URL 配置</a></h2>
-<p>Django 使用 <code>urls.py</code> 文件來配置 URL。這個文件通常位於每個應用的目錄中，並且包含 URL 模式(urlpatterns)和視圖的映射。</p>
-<h3 id="url-配置示例"><a class="header" href="#url-配置示例">URL 配置示例</a></h3>
-<pre><code class="language-python">from django.urls import path
-from . import views
+                        <h1 id="contenttypes-framework"><a class="header" href="#contenttypes-framework">ContentTypes Framework</a></h1>
+<p>Django 的 ContentTypes 框架允許模型引用其他模型，而不需要硬編碼模型名稱。這在創建通用應用時非常有用，例如標籤系統、權限管理和通用的管理操作。ContentTypes 框架提供了一種動態引用模型的方式，使得應用更加靈活和可重用。</p>
+<h2 id="基本概念"><a class="header" href="#基本概念">基本概念</a></h2>
+<p>ContentTypes 框架的核心是 ContentType 模型，它存儲了所有安裝的 Django 應用中的所有模型的元數據。每個 ContentType 對象表示一個模型，並包含模型的應用標籤、模型名稱和數據庫表名。</p>
+<pre><code class="language-python">from django.contrib.contenttypes.models import ContentType
 
-urlpatterns = [
-    path('', views.home, name='home'),
-    path('about/', views.about, name='about'),
-]
+# 獲取 Book 模型的 ContentType 對象
+book_content_type = ContentType.objects.get(app_label='myapp', model='book')
 </code></pre>
-<h2 id="url-模式"><a class="header" href="#url-模式">URL 模式</a></h2>
-<p>URL 模式定義了 URL 的結構。Django 使用 path 和 re_path 函數來定義 URL 模式。</p>
-<h3 id="使用-path"><a class="header" href="#使用-path">使用 <code>path</code></a></h3>
-<p><code>path</code> 函數用於定義簡單的 URL 模式:</p>
-<pre><code class="language-python">from django.urls import path
-from . import views
+<h2 id="通用外鍵"><a class="header" href="#通用外鍵">通用外鍵</a></h2>
+<p>通用外鍵允許模型引用任何其他模型，而不需要硬編碼模型名稱。這在創建通用應用時非常有用。</p>
+<ul>
+<li>
+<p>定義通用外鍵：
+使用 <code>GenericForeignKey</code> 和 <code>GenericRelation</code> 字段來定義通用外鍵。</p>
+<pre><code class="language-python">from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+from django.db import models
 
-urlpatterns = [
-    path('articles/&lt;int:year&gt;/', views.year_archive, name='year_archive'),
-    path('articles/&lt;int:year&gt;/&lt;int:month&gt;/', views.month_archive, name='month_archive'),
-]
+class TaggedItem(models.Model):
+    tag = models.SlugField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    tags = GenericRelation(TaggedItem)
 </code></pre>
-<h3 id="使用-re_path"><a class="header" href="#使用-re_path">使用 <code>re_path</code></a></h3>
-<p><code>re_path</code> 函數用於定義更複雜的 URL 模式，它使用正則表達式:</p>
-<pre><code class="language-python">from django.urls import re_path
-from . import views
+</li>
+<li>
+<p>使用通用外鍵：
+可以通過通用外鍵來引用和查詢其他模型。</p>
+<pre><code class="language-python">from myapp.models import Book, TaggedItem
+from django.contrib.contenttypes.models import ContentType
 
-urlpatterns = [
-    re_path(r'^articles/(?P&lt;year&gt;[0-9]{4})/$', views.year_archive, name='year_archive'),
-    re_path(r'^articles/(?P&lt;year&gt;[0-9]{4})/(?P&lt;month&gt;[0-9]{2})/$', views.month_archive, name='month_archive'),
-]
+# 創建一個新的 Book 對象
+book = Book.objects.create(title=&quot;Django for Beginners&quot;)
+
+# 創建一個新的 TaggedItem 對象，並與 Book 對象關聯
+book_content_type = ContentType.objects.get(app_label='myapp', model='book')
+tagged_item = TaggedItem.objects.create(tag=&quot;django&quot;, content_type=book_content_type, object_id=book.id)
+
+# 查詢與特定 Book 對象關聯的所有 TaggedItem 對象
+tags = book.tags.all()
 </code></pre>
-<h2 id="url-命名"><a class="header" href="#url-命名">URL 命名</a></h2>
-<p>為 URL 模式命名可以使你在模板和視圖中更容易地引用它們。你可以使用 name 參數來命名 URL 模式：</p>
-<pre><code class="language-python">from django.urls import path
-from . import views
+</li>
+</ul>
+<h2 id="通用關係"><a class="header" href="#通用關係">通用關係</a></h2>
+<p>通用關係允許模型與任何其他模型建立關聯，而不需要硬編碼模型名稱。這在創建通用應用時非常有用。</p>
+<ul>
+<li>
+<p>定義通用關係：
+使用 <code>GenericRelation</code> 字段來定義通用關係。</p>
+<pre><code class="language-python">from django.contrib.contenttypes.fields import GenericRelation
+from django.db import models
 
-urlpatterns = [
-    path('', views.home, name='home'),
-    path('about/', views.about, name='about'),
-    path('articles/&lt;int:year&gt;/', views.year_archive, name='year_archive'),
-]
+class Comment(models.Model):
+    content = models.TextField()
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey('content_type', 'object_id')
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+    comments = GenericRelation(Comment)
 </code></pre>
-<h2 id="包含其他-url-配置"><a class="header" href="#包含其他-url-配置">包含其他 URL 配置</a></h2>
-<p>使用 include 函數來包含其他 URL 配置，這允許你將 URL 配置分割到多個文件中，從而使代碼更具模塊化。</p>
-<pre><code class="language-python">from django.urls import include, path
+</li>
+<li>
+<p>使用通用關係：
+可以通過通用關係來引用和查詢其他模型。</p>
+<pre><code class="language-python">from myapp.models import Book, Comment
+from django.contrib.contenttypes.models import ContentType
 
-urlpatterns = [
-    path('articles/', include('articles.urls')),
-    path('blog/', include('blog.urls')),
-]
+# 創建一個新的 Book 對象
+book = Book.objects.create(title=&quot;Django for Beginners&quot;)
+
+# 創建一個新的 Comment 對象，並與 Book 對象關聯
+book_content_type = ContentType.objects.get(app_label='myapp', model='book')
+comment = Comment.objects.create(content=&quot;Great book!&quot;, content_type=book_content_type, object_id=book.id)
+
+# 查詢與特定 Book 對象關聯的所有 Comment 對象
+comments = book.comments.all()
 </code></pre>
-<h2 id="命名空間"><a class="header" href="#命名空間">命名空間</a></h2>
-<p>命名空間允許你在包含的 URL 配置中使用相同的 URL 名稱，而不會發生衝突。使用 namespace 參數來定義命名空間：</p>
-<pre><code class="language-python">from django.urls import include, path
+</li>
+</ul>
+<h2 id="動態引用模型"><a class="header" href="#動態引用模型">動態引用模型</a></h2>
+<p>ContentTypes 框架允許動態引用模型，這在創建通用應用時非常有用。</p>
+<ul>
+<li>
+<p>動態創建對象：
+可以使用 <code>ContentType</code> 對象動態創建其他模型的對象。</p>
+<pre><code class="language-python">from django.contrib.contenttypes.models import ContentType
 
-urlpatterns = [
-    path('articles/', include(('articles.urls', 'articles'), namespace='articles')),
-    path('blog/', include(('blog.urls', 'blog'), namespace='blog')),
-]
+# 獲取 Book 模型的 ContentType 對象
+book_content_type = ContentType.objects.get(app_label='myapp', model='book')
+
+# 動態創建一個新的 Book 對象
+book = book_content_type.model_class().objects.create(title=&quot;Dynamic Book&quot;)
 </code></pre>
-<h2 id="動態-url-路由"><a class="header" href="#動態-url-路由">動態 URL 路由</a></h2>
-<p>在 URL 模式中使用動態參數，並在視圖中訪問這些參數。</p>
-<h4 id="動態-url-路由示例"><a class="header" href="#動態-url-路由示例">動態 URL 路由示例</a></h4>
-<pre><code class="language-python">from django.urls import path
-from . import views
+</li>
+<li>
+<p>動態查詢對象：
+可以使用 <code>ContentType</code> 對象動態查詢其他模型的對象。</p>
+<pre><code class="language-python">from django.contrib.contenttypes.models import ContentType
 
-urlpatterns = [
-    path('articles/&lt;int:year&gt;/', views.year_archive, name='year_archive'),
-    path('articles/&lt;int:year&gt;/&lt;int:month&gt;/', views.month_archive, name='month_archive'),
-]
+# 獲取 Book 模型的 ContentType 對象
+book_content_type = ContentType.objects.get(app_label='myapp', model='book')
+
+# 動態查詢所有 Book 對象
+books = book_content_type.model_class().objects.all()
 </code></pre>
-<h4 id="在視圖中訪問動態參數"><a class="header" href="#在視圖中訪問動態參數">在視圖中訪問動態參數</a></h4>
-<pre><code class="language-python">from django.http import HttpResponse
-
-def year_archive(request, year):
-    return HttpResponse(f&quot;Year: {year}&quot;)
-
-def month_archive(request, year, month):
-    return HttpResponse(f&quot;Year: {year}, Month: {month}&quot;)
-</code></pre>
-<h2 id="默認參數"><a class="header" href="#默認參數">默認參數</a></h2>
-<p>在 URL 模式中定義默認參數，這些參數將在未提供時使用。</p>
-<h4 id="默認參數示例"><a class="header" href="#默認參數示例">默認參數示例</a></h4>
-<pre><code class="language-python">from django.urls import path
-from . import views
-
-urlpatterns = [
-    path('articles/&lt;int:year&gt;/', views.year_archive, {'month': 1}, name='year_archive'),
-]
-</code></pre>
-<h4 id="在視圖中訪問默認參數"><a class="header" href="#在視圖中訪問默認參數">在視圖中訪問默認參數</a></h4>
-<pre><code class="language-python">from django.http import HttpResponse
-
-def year_archive(request, year, month):
-    return HttpResponse(f&quot;Year: {year}, Month: {month}&quot;)
-</code></pre>
+</li>
+</ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="templates.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="django_orm_indexes.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="admin.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="django_orm_geo_django.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -293,11 +306,11 @@ def year_archive(request, year, month):
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="templates.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="django_orm_indexes.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="admin.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="django_orm_geo_django.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

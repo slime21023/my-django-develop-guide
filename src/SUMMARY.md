@@ -25,7 +25,15 @@
 * [Testing](./ninja_testing.md)
 
 # Django ORM
-
-
+* [Defining Django Models](./django_orm_models.md)
+* [Creating Data with Django Models](./django_orm_creating_data.md)
+* [Query and Filter Records](./django_orm_query.md)
+* [Relationships in the Django ORM](./django_orm_relationships.md)
+* [Aggregating and Grouping data](./django_orm_aggregation.md)
+* [Subqueries, Conditional Expressions](./django_orm_subquery.md)
+* [Transactions](./django_orm_transactions.md)
+* [Indexes, Constraints](./django_orm_indexes.md)
+* [ContentTypes Framework](./django_orm_content_types.md)
+* [GeoDjango](./django_orm_geo_django.md)
 
 # Django Ninja JWT 
